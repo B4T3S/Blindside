@@ -19,20 +19,6 @@ export class Game {
       await this._updateSubscribers();
     });
 
-    // Update storage with newly joined player
-    this.socket.onEvent("clientJoined", clientId => {
-      if (this.socket.isHost) {
-        this.socket.updateStorage("players", "array-add", clientId);
-      }
-    });
-
-    // Remove disconnected player from storage
-    this.socket.onEvent("clientLeft", clientId => {
-      if (this.socket.isHost) {
-        this.socket.updateStorage("players", "array-remove-matching", clientId);
-      }
-    });
-
     this._setUpKnownSubscribers();
 
     this.socket.init().then(id => {
@@ -40,21 +26,21 @@ export class Game {
     });
   }
 
-  async createRoom() {
+  async createRoom(username) {
     try {
       const roomCode = await this.socket.createRoom();
 
       this.socket.updateStorage("roomCode", "set", roomCode);
-      this.socket.updateStorage("players", "array-add", this.clientId);
-      console.log(this.socket.clientId);
+      await this.socket.sendRequest("setUsername", username);
     } catch (ex) {
       console.error(ex);
     }
   }
 
-  async joinRoom(roomCode) {
+  async joinRoom(username, roomCode) {
     try {
       await this.socket.joinRoom(roomCode);
+      await this.socket.sendRequest("setUsername", username);
     } catch (ex) {
       console.error(ex);
     }
@@ -71,7 +57,7 @@ export class Game {
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
 
     const players = document.getElementById("players");
-    this._subscribe("players", "players", (playerList) => players.innerText = playerList.join(', '));
+    this._subscribe("players", "players", (playerList) => players.innerText = Object.values(playerList).join(', '));
   }
 
   async _updateSubscribers() {

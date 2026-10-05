@@ -14,6 +14,20 @@ const playSocketServer = new PlaySocketServer({
   path: "/socket"
 });
 
+playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, data }) => {
+  if (name === "setUsername") {
+    playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, data);
+  }
+});
+
+playSocketServer.onEvent("clientDisconnected", async (clientId, roomId) => {
+  playSocketServer.updateRoomStorage(roomId, "players", "object-remove-key", clientId);
+});
+
+playSocketServer.onEvent("clientLeftRoom", async (clientId, roomId) => {
+  playSocketServer.updateRoomStorage(roomId, "players", "object-remove-key", clientId);
+});
+
 // Start the server
 httpServer.listen(3000, () => {
   console.log("Server running on port 3000.");
