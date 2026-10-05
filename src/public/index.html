@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./output.css">
+	<title>Deadlock Guess-Who!</title>
+</head>
+<body class="bg-slate-700">
+
+    <div class="w-screen h-screen flex items-center justify-center">
+        <div>
+            <h5>Room code: <span id="room-code"></span></h5>
+            <span id="create-room" class="bg-orange-200 cursor-pointer">Create room</span>
+            <span id="leave-room" class="bg-red-500 cursor-pointer">Leave room</span>
+            <br/>
+            <br/>
+            <input type="text" id="join-room-code" placeholder="Room code" />
+            <span id="join-room" class="bg-orange-200 cursor-pointer">Join room</span>
+            <br/>
+            <br/>
+            <p>Players: <span id="players"></span></p>
+        </div>
+    </div>
+
+    <script type="module" src="./client.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+import { Game } from "./game";
+
+const game = new Game();
+
+const createRoom = document.getElementById("create-room");
+createRoom.addEventListener("click", async () => await game.createRoom());
+
+const leaveRoom = document.getElementById("leave-room");
+leaveRoom.addEventListener("click", async () => await game.leaveRoom());
+
+const joinRoom = document.getElementById("join-room");
+const joinRoomCode = document.getElementById("join-room-code");
+joinRoom.addEventListener("click", async () => await game.joinRoom(joinRoomCode.value));
