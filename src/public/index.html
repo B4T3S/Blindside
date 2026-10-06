@@ -6,22 +6,30 @@
 	<link rel="stylesheet" href="./output.css">
 	<title>Deadlock Guess-Who!</title>
 </head>
-<body class="bg-slate-700">
-
-    <div class="w-screen h-screen flex items-center justify-center">
-        <div>
-            <h5>Room code: <span id="room-code"></span></h5>
-            <span id="create-room" class="bg-orange-200 cursor-pointer">Create room</span>
-            <span id="leave-room" class="bg-red-500 cursor-pointer">Leave room</span>
-            <br/>
-            <input type="text" id="username" maxlength="16" minlength="1" placeholder="Username" />
-            <br/>
-            <input type="text" id="join-room-code" placeholder="Room code" />
-            <span id="join-room" class="bg-orange-200 cursor-pointer">Join room</span>
-            <br/>
-            <br/>
-            <p>Players: <span id="players"></span></p>
+<body>
+    <div id="lobby" class="w-screen h-screen fixed z-10 bg-slate-700">
+        <div class="h-full flex items-center justify-center">
+            <div>
+                <h5>Room code: <span id="room-code"></span></h5>
+                <span id="create-room" class="bg-orange-200 cursor-pointer">Create room</span>
+                <span id="leave-room" class="bg-red-500 cursor-pointer">Leave room</span>
+                <br/>
+                <input type="text" id="username" maxlength="16" minlength="1" placeholder="Username" />
+                <br/>
+                <input type="text" id="join-room-code" placeholder="Room code" />
+                <span id="join-room" class="bg-orange-200 cursor-pointer">Join room</span>
+                <br/>
+                <br/>
+                <span id="start-game" class="bg-green-600 cursor-pointer">Start game!</span>
+                <br/>
+                <br/>
+                <p>Players: <span id="players"></span></p>
+            </div>
         </div>
+    </div>
+
+    <div id="game" class="w-screen h-screen fixed z-0 bg-purple-900">
+
     </div>
 
     <script type="module" src="./client.js"></script>

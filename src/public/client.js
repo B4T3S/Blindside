@@ -13,3 +13,6 @@ leaveRoom.addEventListener("click", async () => await game.leaveRoom());
 const joinRoom = document.getElementById("join-room");
 const joinRoomCode = document.getElementById("join-room-code");
 joinRoom.addEventListener("click", async () => await game.joinRoom(username.value, joinRoomCode.value));
+
+const startGame = document.getElementById("start-game");
+startGame.addEventListener("click", async () => await game.startGame());

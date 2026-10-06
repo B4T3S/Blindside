@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.fade-out {
+    @apply duration-500 ease-in-out translate-y-full;
+}

@@ -1,4 +1,5 @@
 import PlaySocket from "playsocketjs";
+import { GamePhase } from "./phases";
 
 export class Game {
   _subscribers = [];
@@ -52,12 +53,25 @@ export class Game {
     await this.socket.init();
   }
 
+  async startGame() {
+    await this.socket.sendRequest("startGame");
+  }
+
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
 
     const players = document.getElementById("players");
     this._subscribe("players", "players", (playerList) => players.innerText = Object.values(playerList).join(', '));
+
+    const lobbyScreen = document.getElementById("lobby")
+    this._subscribe("phase", "phase", (phase) => {
+      if (phase == GamePhase.INGAME) {
+        lobbyScreen.classList.add("fade-out");
+      } else {
+        lobbyScreen.classList.remove("fade-out");
+      }
+    });
   }
 
   async _updateSubscribers() {
