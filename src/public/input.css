@@ -45,6 +45,12 @@
     --bg-color: #303030;
     --bg-color-secondary: #1a1a1a;
     --text-color: rgb(233, 233, 230);
+
+    --green: #8ecf6f;
+    --green-secondary: #69ac49;
+
+    --red: #dd6638;
+    --red-secondary: #b44b21;
 }
 
 body {
@@ -134,5 +140,23 @@ dialog {
         opacity: 1;
         animation: rotate-frames 4.5s infinite steps(4);
         box-shadow: 0.3em 0.3em 0.3em 0.1em rgba(0, 0, 0, 0.2);
+    }
+}
+
+.btn-green {
+    background-color: var(--green);
+    @apply text-black;
+
+    &:hover {
+        background-color: var(--green-secondary);
+    }
+}
+
+.btn-red {
+    background-color: var(--red);
+    @apply text-black;
+
+    &:hover {
+        background-color: var(--red-secondary);
     }
 }

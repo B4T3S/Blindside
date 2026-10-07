@@ -23,7 +23,7 @@
                     </span>
                 </button>
 
-                <button id="leave-room" class="text-4xl px-2 cursor-pointer my-auto bg-red-500 hover:bg-red-600 hover:scale-105 inline-block" hidden>
+                <button id="leave-room" class="text-4xl px-2 cursor-pointer my-auto btn-red hover:scale-105 inline-block" hidden>
                     Leave lobby
                 </button>
             </div>
@@ -73,7 +73,7 @@
                                 />
 
                                 <br/>
-                                <span id="create-room" class="inline-block mt-8 bg-green-500 hover:bg-green-600 hover:scale-110 p-2 px-4 cursor-pointer">Open lobby</span>
+                                <span id="create-room" class="btn-green inline-block mt-8 hover:scale-110 p-2 px-4 cursor-pointer">Open lobby</span>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                 <div>
                     <h5>Room code: <span id="room-code"></span></h5>
                     <br />
-                    <span id="start-game" class="bg-green-600 cursor-pointer"
+                    <span id="start-game" class="btn-green cursor-pointer"
                         >Start game!</span
                     >
                     <br />
@@ -138,8 +138,8 @@
                 />
 
                 <span class="mt-4 w-full">
-                    <button class="inline-block bg-red-500 hover:bg-red-600 hover:scale-105 cursor-pointer py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
-                    <button class="inline-block bg-green-500 hover:bg-green-600 hover:scale-105 cursor-pointer py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
+                    <button class="inline-block btn-red hover:scale-105 cursor-pointer py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
+                    <button class="inline-block btn-green hover:scale-105 cursor-pointer py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
                 </span>
             </div>
         </dialog>
