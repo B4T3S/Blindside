@@ -96,7 +96,19 @@
             </div>
         </div>
 
-        <div id="game" class="w-screen h-screen fixed z-0 bg-purple-900"></div>
+        <div id="game" class="w-screen h-screen fixed z-0 bg-guess-who">
+            <div class="h-full flex items-center justify-center">
+                <div class="flex flex-row" id="player-container"></div>
+            </div>
+        </div>
+
+        <template id="player-frame">
+            <div class="bg-neutral-200 p-4 m-5">
+                <h1 class="text-lg mb-2 text-center font-bold text-black">Target Name</h1>
+                <img class="aspect-square w-full border border-black mb-2 text-black" src="" alt="Target Image" />
+                <h2 class="text-sm text-center italic text-neutral-800">Player Name</h2>
+            </div>
+        </template>
 
         <dialog id="join-game-dialog" class="m-auto bg-transparent">
             <div class="p-8 flex flex-col weird-bg overflow-hidden">

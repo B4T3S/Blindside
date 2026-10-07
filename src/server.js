@@ -15,20 +15,51 @@ const playSocketServer = new PlaySocketServer({
   path: "/socket"
 });
 
-// Manage usernames
+// Manage events
 playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, data }) => {
-  if (name === "setUsername") {
-    playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, data);
-  }
-
-  if (name === "startGame") {
-    if (playSocketServer.getRoomStorage(roomId)?.phase !== GamePhase.INGAME) {
-      playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.INGAME);
-    } else {
-      return "Game already in progress!";
-    }
+  switch (name) {
+    case "setUsername":
+      playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, data);
+      break;
+    case "startGame":
+      if (playSocketServer.getRoomStorage(roomId)?.phase !== GamePhase.INGAME) {
+        playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.INGAME);
+      } else {
+        return "Game already in progress!";
+      }
+      break;
+    case "startRound":
+      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", generateUsernames(roomId));
+      break;
   }
 });
+
+function generateUsernames(roomId) {
+  const players = playSocketServer.getRoomStorage(roomId)?.players;
+  // TODO: Find better way to store names/images etc.
+  let namePool = ["Vindicta", "The Lash", "Beebop", "The Doorman"];
+  shuffleArray(namePool);
+
+  if (!players) return;
+
+  var playerNames = {};
+
+  for (const [id, name] of Object.entries(players)) {
+    playerNames[id] = {
+        "target": namePool.pop(),
+        "playerName": name
+      }
+  }
+
+  return playerNames;
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 // Remove players from the lobby if they leave
 playSocketServer.onEvent("clientDisconnected", async (clientId, roomId) => {

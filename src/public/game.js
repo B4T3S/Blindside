@@ -58,6 +58,8 @@ export class Game {
 
   async startGame() {
     await this.socket.sendRequest("startGame");
+
+    setTimeout(async () => await this.socket.sendRequest("startRound"), 3000);
   }
 
   _setUpKnownSubscribers() {
@@ -66,6 +68,8 @@ export class Game {
 
     const players = document.getElementById("players");
     this._subscribe("players", "players", (playerList) => players.innerText = Object.values(playerList).join(', '));
+
+    this._subscribe("playerNames", "playerNames", (playerData) => this._showPlayerNames(playerData));
 
     this._subscribe("phase", "phase", (phase) => {
       this._handlePhaseChange(phase);
@@ -88,12 +92,15 @@ export class Game {
     const joinRoom = document.getElementById("join-room-button");
     const leaveRoom = document.getElementById("leave-room");
 
+    const playerContainer = document.getElementById("player-container");
+
     switch (phase) {
       case GamePhase.INGAME:
         lobbyScreen.classList.add("fade-out");
         gameSelect.classList.add("fade-out");
         joinRoom.hidden = true;
         leaveRoom.hidden = false;
+        playerContainer.innerHTML = "";
         break;
       case GamePhase.LOBBY:
         lobbyScreen.classList.remove("fade-out");
@@ -108,6 +115,22 @@ export class Game {
         leaveRoom.hidden = true;
         break;
     }
+  }
+
+  _showPlayerNames(playerData) {
+    const playerContainer = document.getElementById("player-container");
+
+    for (const [id, data] of Object.entries(playerData)) {
+      const playerNode = document.importNode(document.getElementById("player-frame").content, true);
+      const isOwnCharacter = id == this.clientId;
+
+      playerNode.querySelector("h1").innerText = isOwnCharacter ? "???" : data["target"];
+      playerNode.querySelector("h2").innerText = data["playerName"];
+
+      playerContainer.appendChild(playerNode);
+    }
+
+    console.log(playerData);
   }
 
   _subscribe(elementId, property, callback) {
