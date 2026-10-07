@@ -32,6 +32,7 @@ export class Game {
       const roomCode = await this.socket.createRoom();
 
       this.socket.updateStorage("roomCode", "set", roomCode);
+      this.socket.updateStorage("phase", "set", GamePhase.LOBBY);
       await this.socket.sendRequest("setUsername", username);
     } catch (ex) {
       console.error(ex);
@@ -51,6 +52,8 @@ export class Game {
     this.socket.destroy("leaving");
 
     await this.socket.init();
+
+    this._handlePhaseChange(GamePhase.PREGAME);
   }
 
   async startGame() {
@@ -64,13 +67,8 @@ export class Game {
     const players = document.getElementById("players");
     this._subscribe("players", "players", (playerList) => players.innerText = Object.values(playerList).join(', '));
 
-    const lobbyScreen = document.getElementById("lobby")
     this._subscribe("phase", "phase", (phase) => {
-      if (phase == GamePhase.INGAME) {
-        lobbyScreen.classList.add("fade-out");
-      } else {
-        lobbyScreen.classList.remove("fade-out");
-      }
+      this._handlePhaseChange(phase);
     });
   }
 
@@ -80,6 +78,35 @@ export class Game {
       if (subscriber) {
         await subscriber.callback(value);
       }
+    }
+  }
+
+  _handlePhaseChange(phase) {
+    const lobbyScreen = document.getElementById("lobby")
+    const gameSelect = document.getElementById("game-select");
+
+    const joinRoom = document.getElementById("join-room-button");
+    const leaveRoom = document.getElementById("leave-room");
+
+    switch (phase) {
+      case GamePhase.INGAME:
+        lobbyScreen.classList.add("fade-out");
+        gameSelect.classList.add("fade-out");
+        joinRoom.hidden = true;
+        leaveRoom.hidden = false;
+        break;
+      case GamePhase.LOBBY:
+        lobbyScreen.classList.remove("fade-out");
+        gameSelect.classList.add("fade-out");
+        joinRoom.hidden = true;
+        leaveRoom.hidden = false;
+        break;
+      default:
+        lobbyScreen.classList.remove("fade-out");
+        gameSelect.classList.remove("fade-out");
+        joinRoom.hidden = false;
+        leaveRoom.hidden = true;
+        break;
     }
   }
 

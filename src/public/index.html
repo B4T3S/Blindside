@@ -7,25 +7,29 @@
         <title>Deadlock Guess-Who!</title>
     </head>
     <body>
-        <div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who">
-            <div class="py-4 px-8 text-shadow-lg/30 header">
-                <div class="flex">
-                    <a href="#" class="text-7xl font-bold">Guess Who?</a>
-                    <h4 class="text-2xl ms-4 mb-2 mt-auto">
-                        Well go on...<i>guess!</i>
-                    </h4>
-                </div>
-                <div class="flex">
-                    <button
-                        class="weird-button transition-all duration-300 hover:scale-105 my-auto!"
-                    >
-                        <span class="text-4xl my-auto weird-button-label">
-                            Join a lobby
-                        </span>
-                    </button>
-                </div>
+        <div class="header">
+            <div class="flex">
+                <a href="#" class="text-7xl font-bold">Guess Who?</a>
+                <h4 class="text-2xl ms-4 mb-2 mt-auto">
+                    Well go on...<i>guess!</i>
+                </h4>
             </div>
+            <div class="flex">
+                <button id="join-room-button" command="show-modal" commandfor="join-game-dialog"
+                    class="weird-button transition-all duration-300 hover:scale-105 my-auto!"
+                >
+                    <span class="text-4xl my-auto weird-button-label">
+                        Join a lobby
+                    </span>
+                </button>
 
+                <button id="leave-room" class="text-4xl px-2 cursor-pointer my-auto bg-red-500 hover:bg-red-600 hover:scale-105 inline-block" hidden>
+                    Leave lobby
+                </button>
+            </div>
+        </div>
+
+        <div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who duration-500 ease-in-out">
             <div class="px-8 pb-8 pt-30 h-screen top-0 flex">
                 <div class="grid grid-cols-3 gap-8 w-full">
                     <div
@@ -52,40 +56,35 @@
                     </div>
 
                     <div class="col-span-2">
-                        <!-- category selection goes here -->
+                        <div class="flex h-full items-center justify-center">
+                            <div id="lobby-creation" class="p-5 weird-bg">
+                                <h2 class="text-3xl mb-4 select-none">Creating a <span class="font-bold" id="lobby-creation-name">...</span> lobby</h2>
+
+                                <label class="block" for="lobby-username">What should we call you?</label>
+                                <input
+                                    class="block"
+                                    type="text"
+                                    id="lobby-username"
+                                    maxlength="16"
+                                    minlength="1"
+                                    placeholder="Username"
+                                    required
+                                    data-1p-ignore
+                                />
+
+                                <br/>
+                                <span id="create-room" class="inline-block mt-8 bg-green-500 hover:bg-green-600 hover:scale-110 p-2 px-4 cursor-pointer">Open lobby</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="lobby" class="w-screen h-screen fixed z-10 bg-slate-700">
+        <div id="lobby" class="w-screen h-screen fixed z-10 bg-guess-who duration-500 ease-in-out">
             <div class="h-full flex items-center justify-center">
                 <div>
                     <h5>Room code: <span id="room-code"></span></h5>
-                    <span id="create-room" class="bg-orange-200 cursor-pointer"
-                        >Create room</span
-                    >
-                    <span id="leave-room" class="bg-red-500 cursor-pointer"
-                        >Leave room</span
-                    >
-                    <br />
-                    <input
-                        type="text"
-                        id="username"
-                        maxlength="16"
-                        minlength="1"
-                        placeholder="Username"
-                    />
-                    <br />
-                    <input
-                        type="text"
-                        id="join-room-code"
-                        placeholder="Room code"
-                    />
-                    <span id="join-room" class="bg-orange-200 cursor-pointer"
-                        >Join room</span
-                    >
-                    <br />
                     <br />
                     <span id="start-game" class="bg-green-600 cursor-pointer"
                         >Start game!</span
@@ -98,6 +97,40 @@
         </div>
 
         <div id="game" class="w-screen h-screen fixed z-0 bg-purple-900"></div>
+
+        <dialog id="join-game-dialog" class="m-auto bg-transparent">
+            <div class="p-8 flex flex-col weird-bg overflow-hidden">
+                <h1 class="text-2xl mb-5">Join a room?</h1>
+
+                <label class="block" for="lobby-username">What should we call you?</label>
+                <input
+                    class="block"
+                    type="text"
+                    id="join-room-username"
+                    maxlength="16"
+                    minlength="1"
+                    placeholder="Username"
+                    required
+                    data-1p-ignore
+                />
+
+                <label for="join-room-code" class="mt-4">
+                    And what's the room code?
+                </label>
+                <input
+                    type="text"
+                    id="join-room-code"
+                    placeholder="Room code"
+                    maxlength="16"
+                    data-1p-ignore
+                />
+
+                <span class="mt-4 w-full">
+                    <button class="inline-block bg-red-500 hover:bg-red-600 hover:scale-105 cursor-pointer py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
+                    <button class="inline-block bg-green-500 hover:bg-green-600 hover:scale-105 cursor-pointer py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
+                </span>
+            </div>
+        </dialog>
 
         <script type="module" src="./client.js"></script>
     </body>
