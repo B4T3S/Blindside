@@ -55,6 +55,10 @@ body {
     font-style: normal;
 }
 
+input {
+    @apply  px-1 py-0.5 border-2 rounded-sm border-stone-400;
+}
+
 dialog {
     &::backdrop {
         @apply bg-black opacity-70;
