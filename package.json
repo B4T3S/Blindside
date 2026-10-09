@@ -5,6 +5,7 @@
     "express": "^5.2.1",
     "playsocketjs": "^5.2.1",
     "postcss": "^8.5.29",
+    "sqlite3": "^6.0.1",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
@@ -13,7 +14,8 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "node --watch ./src/server.js",
-    "dev:client": "vite --host 0.0.0.0 --port 3001 -c ./vite.config.js ./src/public"
+    "dev:server": "node --watch ./src/backend/server.js",
+    "dev:client": "vite --host 0.0.0.0 --port 3001 -c ./vite.config.js ./src/public",
+    "admin": "node ./scripts/admin.js"
   }
 }

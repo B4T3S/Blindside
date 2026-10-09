@@ -1,9 +1,11 @@
 import express from "express";
 import http from "node:http";
 import PlaySocketServer from "playsocketjs/server";
-import { GamePhase } from './public/phases.js'
+import { GamePhase } from '../public/phases.js'
+import { DatabaseService } from "./service/database_service.js";
 
 const app = express();
+const dbService = new DatabaseService();
 const httpServer = http.createServer(app);
 
 // Serve public folder
