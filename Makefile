@@ -5,6 +5,10 @@ help: ## Show available commands
 	@echo "Available commands:"
 	@awk 'BEGIN {FS = ":.*##"; printf "\n"} /^[a-zA-Z_-]+:.*##/ { printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
+.PHONY: setup
+setup: ## Installs all npm packages
+	docker run -v ./:/app -t -w /app node:26-alpine npm install
+
 .PHONY: up
 up: ## Start containers in detached mode
 	docker compose up -d
