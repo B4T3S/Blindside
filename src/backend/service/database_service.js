@@ -25,4 +25,19 @@ export class DatabaseService {
     del.run(identifier, role);
     del.finalize();
   }
+
+  get_user_roles(identifier) {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT role FROM user_roles WHERE identifier = ?';
+
+      this.db.all(sql, [identifier], (err, rows) => {
+        if (err) {
+          console.error(err);
+          return [];
+        }
+
+        resolve(rows.map(row => row.role));
+      });
+    });
+  }
 }

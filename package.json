@@ -2,7 +2,9 @@
   "type": "module",
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "connect-sqlite3": "^0.9.18",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "playsocketjs": "^5.2.1",
     "postcss": "^8.5.29",
     "sqlite3": "^6.0.1",

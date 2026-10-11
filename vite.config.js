@@ -5,7 +5,7 @@ export default defineConfig({
 
     server: {
         proxy: {
-            "/api": "http://localhost:3000",
+            "/admin": "http://localhost:3000",
 
             "/socket": {
                 target: "ws://localhost:3000",

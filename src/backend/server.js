@@ -3,10 +3,36 @@ import http from "node:http";
 import PlaySocketServer from "playsocketjs/server";
 import { GamePhase } from '../public/phases.js'
 import { DatabaseService } from "./service/database_service.js";
+import { createAdminRouter } from "./routes/admin.js";
+import session from "express-session";
+import connectSqlite3 from 'connect-sqlite3';
 
 const app = express();
 const dbService = new DatabaseService();
 const httpServer = http.createServer(app);
+const SQLiteStore = connectSqlite3(session);
+
+// Set up session handling
+app.use(session({
+  store: new SQLiteStore({
+    db: 'database.sqlite',
+    dir: './src/backend',
+    table: 'sessions'
+  }),
+  name: 'admin.sid',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}));
+
+// Register protected routes
+app.use('/admin', createAdminRouter(dbService));
 
 // Serve public folder
 app.use(express.static('src/public'));

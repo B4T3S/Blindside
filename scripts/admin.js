@@ -1,12 +1,12 @@
 import { DatabaseService } from "../src/backend/service/database_service.js";
 
-function main() {
+async function main() {
   if (process.argv.length <= 2) {
     console.log("Manage roles using the following format: npm admin <add/remove> <identifier> <role>");
     return;
   }
 
-  if (process.argv.length < 5) {
+  if (process.argv.length < 5 && process.argv[2].toLocaleLowerCase() != "get") {
     console.log("Missing argument(s)! You need to provide add/remove, an identifier and a role!");
   }
 
@@ -18,6 +18,9 @@ function main() {
       break;
     case "remove":
       db.remove_user_role(process.argv[3].toLowerCase(), process.argv[4].toLowerCase());
+      break;
+    case "get":
+      console.log(await db.get_user_roles(process.argv[3].toLowerCase()))
       break;
     default:
       console.log(`Unknown command ${process.argv[2]}! Available options are: "add" and "remove"`);
