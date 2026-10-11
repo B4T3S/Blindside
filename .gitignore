@@ -2,3 +2,7 @@ node_modules
 output.css
 database.sqlite
 .env
+
+# Statically generated content
+static/js/*.js
+static/css/*.css

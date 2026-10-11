@@ -1,7 +1,7 @@
 import express from "express";
 import http from "node:http";
 import PlaySocketServer from "playsocketjs/server";
-import { GamePhase } from '../public/phases.js'
+import { GamePhase } from '../../static/js/enums.js'
 import { DatabaseService } from "./service/database_service.js";
 import { createAdminRouter } from "./routes/admin.js";
 import session from "express-session";
@@ -12,11 +12,14 @@ const dbService = new DatabaseService();
 const httpServer = http.createServer(app);
 const SQLiteStore = connectSqlite3(session);
 
+// Set view engine
+app.set('view engine', 'twig');
+
 // Set up session handling
 app.use(session({
   store: new SQLiteStore({
     db: 'database.sqlite',
-    dir: './src/backend',
+    dir: './',
     table: 'sessions'
   }),
   name: 'admin.sid',
@@ -34,8 +37,13 @@ app.use(session({
 // Register protected routes
 app.use('/admin', createAdminRouter(dbService));
 
-// Serve public folder
-app.use(express.static('src/public'));
+// Serve static folder
+app.use('/static', express.static('./static'));
+
+// Serve base route
+app.get('/', (req, res) => {
+  res.render('index.html.twig');
+});
 
 // Create PlaySocket server with existing HTTP server
 const playSocketServer = new PlaySocketServer({
@@ -105,8 +113,9 @@ httpServer.listen(3000, () => {
 
 // Clean up on shutdown
 function shutdown() {
-    playSocketServer.stop(); // Gracefully disconnect clients
-    process.exit(0);
+  console.log("Received SIGINT/SIGTERM. Shutting down server.");
+  playSocketServer.stop(); // Gracefully disconnect clients
+  process.exit(0);
 }
 
 process.on("SIGINT", shutdown);

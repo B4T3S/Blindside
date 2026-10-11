@@ -68,12 +68,7 @@ export function createAdminRouter(database) {
 
   // Protected routes
   router.get('/', requireRole('role_admin'), (req, res) => {
-    res.json({
-      message: 'Welcome to the admin dashboard!',
-      user: {
-        roles: req.session.roles
-      }
-    });
+    res.render('admin/dashboard.html.twig', { roles: req.session.roles });
   });
 
   // Deny unknown admin paths rather than falling through

@@ -1,17 +1,22 @@
 import PlaySocket from "playsocketjs";
-import { GamePhase } from "./phases";
+import { GamePhase } from "./enums.js";
 
 export class Game {
   _subscribers = [];
 
   constructor() {
     // Create a new socket connection
+
+    console.log('Initializing PlaySocket client');
+
     this.socket = new PlaySocket(null, {
         endpoint: `${window.location.protocol == 'https:' ? 'wss' : 'ws'}://${window.location.host}/socket`
     });
 
+    console.log('PlaySocket client initialized');
+
     // Log all status events
-    this.socket.onEvent("status", status => console.log(status));
+    this.socket.onEvent("status", status => console.log(`Status updated: ${status}`));
 
     // Update internal storage reference
     this.socket.onEvent("storageUpdated", async storage => {
