@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/static/css/index.css" />
+        <title>Guess-Who admin panel</title>
+    </head>
+    <body class="!font-sans bg-guess-who h-screen">
+        <div class="header">
+            <div class="flex">
+                <h4 class="text-xl ms-4 mb-2 mt-auto">
+                    Guess-Who admin panel
+                </h4>
+            </div>
+            <div class="flex">
+                <a class="bg-red-600 my-auto py-2 px-4" href="/admin/logout">
+                    Log out
+                </a>
+            </div>
+        </div>
+
+        {% block body %}{% endblock %}
+
+        {% if hotReload %}
+            <script type="module" src="/static/js/hot-reload.js"></script>
+        {% endif %}
+    </body>
+
+</html>

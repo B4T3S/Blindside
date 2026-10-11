@@ -67,12 +67,15 @@ export function createAdminRouter(database) {
   router.use(requireAuth);
 
   // Protected routes
-  router.get('/', requireRole('role_admin'), (req, res) => {
-    res.render('admin/dashboard.html.twig', { roles: req.session.roles });
+  router.get('/', requireRole('role_admin'), async (_, res) => {
+    res.render('admin/dashboard.html.twig', {
+      hotReload: process.env.NODE_ENV !== 'production',
+      games: await database.get_all_games()
+    });
   });
 
   // Deny unknown admin paths rather than falling through
-  router.use((req, res) => {
+  router.use((_, res) => {
     res.sendStatus(404);
   });
 

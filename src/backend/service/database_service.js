@@ -27,7 +27,7 @@ export class DatabaseService {
   }
 
   get_user_roles(identifier) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const sql = 'SELECT role FROM user_roles WHERE identifier = ?';
 
       this.db.all(sql, [identifier], (err, rows) => {
@@ -37,6 +37,21 @@ export class DatabaseService {
         }
 
         resolve(rows.map(row => row.role));
+      });
+    });
+  }
+
+  get_all_games() {
+    return new Promise((resolve) => {
+      const sql = 'SELECT * FROM media';
+
+      this.db.all(sql, (err, rows) => {
+        if (err) {
+          console.error(err);
+          return [];
+        }
+
+        resolve(rows);
       });
     });
   }

@@ -1,3 +1,29 @@
-<h1>Hello world!</h1>
+{% extends 'admin/base.html.twig' %}
 
-<p>Your roles are: {{ roles }}</p>
+{% block body %}
+    <div class="w-full h-full flex justify-center items-center">
+        <table class="text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-100 border-b border-slate-200">
+                <th class="py-3 px-4 font-semibold text-slate-700">#</th>
+                <th class="py-3 px-4 font-semibold text-slate-700">Name</th>
+                <th class="py-3 px-4 font-semibold text-slate-700">Splash art</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+                {% for game in games %}
+                  <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 text-slate-600">{{ loop.index }}</td>
+                    <td class="py-3 px-4 text-slate-600">{{ game.name }}</td>
+                    <td class="py-3 px-4 text-slate-600">{% if game.splash_art_url %}<img src="{{ game.splash_art_url }}" />{% endif %}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+
+          <form action="POST">
+              <input name="name" type="text" data-1p-ignore />
+              <input name="url" type="url" data-1p-ignore />
+          </form>
+    </div>
+{% endblock %}
