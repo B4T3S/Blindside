@@ -46,8 +46,8 @@
     --bg-color-secondary: #1a1a1a;
     --text-color: rgb(233, 233, 230);
 
-    --green: #8ecf6f;
-    --green-secondary: #69ac49;
+    --green: #99cf3c;
+    --green-secondary: #8fb421;
 
     --red: #dd6638;
     --red-secondary: #b44b21;
@@ -144,19 +144,61 @@ dialog {
 }
 
 .btn-green {
-    background-color: var(--green);
-    @apply text-black;
+    @apply text-black cursor-pointer relative transition-all;
 
-    &:hover {
+    &::before {
+        content: "";
+        background-color: var(--green);
+        clip-path: polygon(
+            5% 12%,
+            94% 4%,
+            99% 91%,
+            8% 98%
+        );
+
+        z-index: -1;
+        @apply absolute inset-0;
+    }
+    &:hover::before {
         background-color: var(--green-secondary);
+        clip-path: polygon(
+            5% 12%,
+            94% 4%,
+            99% 91%,
+            8% 98%
+        );
+    }
+    &:hover {
+        @apply text-white;
     }
 }
 
 .btn-red {
-    background-color: var(--red);
-    @apply text-black;
+    @apply text-black cursor-pointer relative transition-all;
 
-    &:hover {
+    &::before {
+        content: "";
+        background-color: var(--red);
+        clip-path: polygon(
+            2% 10%,
+            98% 16%,
+            91% 100%,
+            10% 93%
+        );
+
+        z-index: -1;
+        @apply absolute inset-0;
+    }
+    &:hover::before {
         background-color: var(--red-secondary);
+        clip-path: polygon(
+            2% 10%,
+            98% 16%,
+            91% 100%,
+            10% 93%
+        );
+    }
+    &:hover {
+        @apply text-white;
     }
 }

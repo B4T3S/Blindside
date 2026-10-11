@@ -23,7 +23,7 @@
                     </span>
                 </button>
 
-                <button id="leave-room" class="text-4xl px-2 cursor-pointer my-auto btn-red hover:scale-105 inline-block" hidden>
+                <button id="leave-room" class="text-4xl px-2 my-auto btn-red hover:scale-105 inline-block" hidden>
                     Leave lobby
                 </button>
             </div>
@@ -73,7 +73,7 @@
                                 />
 
                                 <br/>
-                                <span id="create-room" class="btn-green inline-block mt-8 hover:scale-110 p-2 px-4 cursor-pointer">Open lobby</span>
+                                <button id="create-room" class="btn-green inline-block mt-8 hover:scale-110 p-2 px-4">Open lobby</button>
                             </div>
                         </div>
                     </div>
@@ -83,11 +83,11 @@
 
         <div id="lobby" class="w-screen h-screen fixed z-10 bg-guess-who duration-500 ease-in-out">
             <div class="h-full flex items-center justify-center">
-                <div>
+                <div class="weird-bg p-5">
                     <h5>Room code: <span id="room-code"></span></h5>
                     <br />
-                    <span id="start-game" class="btn-green cursor-pointer"
-                        >Start game!</span
+                    <button id="start-game" class="btn-green p-2 px-4 hover:scale-110"
+                        >Start game!</button
                     >
                     <br />
                     <br />
@@ -138,12 +138,13 @@
                 />
 
                 <span class="mt-4 w-full">
-                    <button class="inline-block btn-red hover:scale-105 cursor-pointer py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
-                    <button class="inline-block btn-green hover:scale-105 cursor-pointer py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
+                    <button class="inline-block btn-red hover:scale-105 py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
+                    <button class="inline-block btn-green hover:scale-105 py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
                 </span>
             </div>
         </dialog>
 
         <script type="module" src="./client.js"></script>
     </body>
+
 </html>
