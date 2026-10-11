@@ -145,6 +145,9 @@
         </dialog>
 
         <script type="module" src="/static/js/client.js"></script>
+        {% if hotReload %}
+            <script type="module" src="/static/js/hot-reload.js"></script>
+        {% endif %}
     </body>
 
 </html>

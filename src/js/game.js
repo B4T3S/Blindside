@@ -134,8 +134,6 @@ export class Game {
 
       playerContainer.appendChild(playerNode);
     }
-
-    console.log(playerData);
   }
 
   _subscribe(elementId, property, callback) {

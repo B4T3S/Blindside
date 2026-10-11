@@ -6,11 +6,15 @@ import { DatabaseService } from "./service/database_service.js";
 import { createAdminRouter } from "./routes/admin.js";
 import session from "express-session";
 import connectSqlite3 from 'connect-sqlite3';
+import { WebSocketServer, WebSocket } from "ws";
 
 const app = express();
 const dbService = new DatabaseService();
 const httpServer = http.createServer(app);
 const SQLiteStore = connectSqlite3(session);
+
+const hotReload = process.env.NODE_ENV !== 'production';
+let reloadWss = null;
 
 // Set view engine
 app.set('view engine', 'twig');
@@ -42,7 +46,7 @@ app.use('/static', express.static('./static'));
 
 // Serve base route
 app.get('/', (req, res) => {
-  res.render('index.html.twig');
+  res.render('index.html.twig', { hotReload });
 });
 
 // Create PlaySocket server with existing HTTP server
@@ -50,6 +54,13 @@ const playSocketServer = new PlaySocketServer({
   server: httpServer,
   path: "/socket"
 });
+
+if (hotReload) {
+  reloadWss = new WebSocketServer({
+    port: 3001,
+    path: '/hot-reload'
+  });
+}
 
 // Manage events
 playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, data }) => {
@@ -114,6 +125,15 @@ httpServer.listen(3000, () => {
 // Clean up on shutdown
 function shutdown() {
   console.log("Received SIGINT/SIGTERM. Shutting down server.");
+  if (hotReload && reloadWss != null) {
+    console.log("Environment is not production! Triggering hot-reload!");
+
+    reloadWss.clients.forEach(client => {
+      if (client !== reloadWss && client.readyState === WebSocket.OPEN) {
+        client.send('reload');
+      }
+    });
+  }
   playSocketServer.stop(); // Gracefully disconnect clients
   process.exit(0);
 }
