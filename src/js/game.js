@@ -70,11 +70,10 @@ export class Game {
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
+    
+    this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList));
 
-    const players = document.getElementById("players");
-    this._subscribe("players", "players", (playerList) => players.innerText = Object.values(playerList).join(', '));
-
-    this._subscribe("playerNames", "playerNames", (playerData) => this._showPlayerNames(playerData));
+    this._subscribe("playerNames", "playerNames", (playerData) => this._showPlayerFrames(playerData));
 
     this._subscribe("phase", "phase", (phase) => {
       this._handlePhaseChange(phase);
@@ -121,8 +120,19 @@ export class Game {
         break;
     }
   }
+  
+  _showPlayerNames(playerList) {
+    const playerContainer = document.getElementById("players");
+    playerContainer.innerHTML = "";
+    
+    for (const playerName of Object.values(playerList)) {
+      const playerNameFrame = document.importNode(document.getElementById("player-name").content, true);
+      playerNameFrame.querySelector("li").innerText = playerName;
+      playerContainer.append(playerNameFrame);
+    }
+  }
 
-  _showPlayerNames(playerData) {
+  _showPlayerFrames(playerData) {
     const playerContainer = document.getElementById("player-container");
 
     for (const [id, data] of Object.entries(playerData)) {

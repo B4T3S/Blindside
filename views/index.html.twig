@@ -9,6 +9,7 @@
     <body>
         <div class="header">
             <div class="flex">
+                <a href="#" class="text-7xl font-bold">Guess Who?</a>
                 <h4 class="text-2xl ms-4 mb-2 mt-auto">
                     Well go on...<i>guess!</i>
                 </h4>
@@ -28,120 +29,13 @@
             </div>
         </div>
 
-        <div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who duration-500 ease-in-out">
-            <div class="px-8 pb-8 pt-30 h-screen top-0 flex">
-                <div class="grid grid-cols-3 gap-8 w-full">
-                    <div
-                        class="grid grid-cols-1 gap-4 h-full place-content-center justify-items-center"
-                    >
-                        <button
-                            class="weird-button transition-all duration-300 hover:scale-105 w-fit"
-                        >
-                            <span
-                                class="text-7xl my-auto weird-button-label font-bold"
-                            >
-                                DEADLOCK
-                            </span>
-                        </button>
-                        <button
-                            class="weird-button transition-all duration-300 hover:scale-105 w-fit"
-                        >
-                            <span
-                                class="text-7xl my-auto weird-button-label font-bold"
-                            >
-                                MINECRAFT
-                            </span>
-                        </button>
-                    </div>
+        {% include 'components/game-select.html.twig' %}
 
-                    <div class="col-span-2">
-                        <div class="flex h-full items-center justify-center">
-                            <div id="lobby-creation" class="p-5 weird-bg">
-                                <h2 class="text-3xl mb-4 select-none">Creating a <span class="font-bold" id="lobby-creation-name">...</span> lobby</h2>
+        {% include 'components/lobby.html.twig' %}
 
-                                <label class="block" for="lobby-username">What should we call you?</label>
-                                <input
-                                    class="block"
-                                    type="text"
-                                    id="lobby-username"
-                                    maxlength="16"
-                                    minlength="1"
-                                    placeholder="Username"
-                                    required
-                                    data-1p-ignore
-                                />
+        {% include 'components/game.html.twig' %}
 
-                                <br/>
-                                <button id="create-room" class="btn-green inline-block mt-8 hover:scale-110 p-2 px-4">Open lobby</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="lobby" class="w-screen h-screen fixed z-10 bg-guess-who duration-500 ease-in-out">
-            <div class="h-full flex items-center justify-center">
-                <div class="weird-bg p-5">
-                    <h5>Room code: <span id="room-code"></span></h5>
-                    <br />
-                    <button id="start-game" class="btn-green p-2 px-4 hover:scale-110"
-                        >Start game!</button
-                    >
-                    <br />
-                    <br />
-                    <p>Players: <span id="players"></span></p>
-                </div>
-            </div>
-        </div>
-
-        <div id="game" class="w-screen h-screen fixed z-0 bg-guess-who">
-            <div class="h-full flex items-center justify-center">
-                <div class="flex flex-row" id="player-container"></div>
-            </div>
-        </div>
-
-        <template id="player-frame">
-            <div class="bg-neutral-200 p-4 m-5">
-                <h1 class="text-lg mb-2 text-center font-bold text-black">Target Name</h1>
-                <img class="aspect-square w-full border border-black mb-2 text-black" src="" alt="Target Image" />
-                <h2 class="text-sm text-center italic text-neutral-800">Player Name</h2>
-            </div>
-        </template>
-
-        <dialog id="join-game-dialog" class="m-auto bg-transparent">
-            <div class="p-8 flex flex-col weird-bg overflow-hidden">
-                <h1 class="text-2xl mb-5">Join a room?</h1>
-
-                <label class="block" for="lobby-username">What should we call you?</label>
-                <input
-                    class="block"
-                    type="text"
-                    id="join-room-username"
-                    maxlength="16"
-                    minlength="1"
-                    placeholder="Username"
-                    required
-                    data-1p-ignore
-                />
-
-                <label for="join-room-code" class="mt-4">
-                    And what's the room code?
-                </label>
-                <input
-                    type="text"
-                    id="join-room-code"
-                    placeholder="Room code"
-                    maxlength="16"
-                    data-1p-ignore
-                />
-
-                <span class="mt-4 w-full">
-                    <button class="inline-block btn-red hover:scale-105 py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
-                    <button class="inline-block btn-green hover:scale-105 py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
-                </span>
-            </div>
-        </dialog>
+        {% include 'components/join-game-dialog.html.twig' %}
 
         <script type="module" src="/static/js/client.js"></script>
         {% if hotReload %}

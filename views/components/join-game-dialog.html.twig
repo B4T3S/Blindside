@@ -1,0 +1,33 @@
+<dialog id="join-game-dialog" class="m-auto bg-transparent">
+    <div class="p-8 flex flex-col weird-bg overflow-hidden">
+        <h1 class="text-2xl mb-5">Join a room?</h1>
+
+        <label class="block" for="lobby-username">What should we call you?</label>
+        <input
+            class="block"
+            type="text"
+            id="join-room-username"
+            maxlength="16"
+            minlength="1"
+            placeholder="Username"
+            required
+            data-1p-ignore
+        />
+
+        <label for="join-room-code" class="mt-4">
+            And what's the room code?
+        </label>
+        <input
+            type="text"
+            id="join-room-code"
+            placeholder="Room code"
+            maxlength="16"
+            data-1p-ignore
+        />
+
+        <span class="mt-4 w-full">
+            <button class="inline-block btn-red hover:scale-105 py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
+            <button class="inline-block btn-green hover:scale-105 py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
+        </span>
+    </div>
+</dialog>

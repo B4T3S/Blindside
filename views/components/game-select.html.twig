@@ -1,0 +1,51 @@
+<div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who transition-transform duration-500 ease-in-out">
+    <div class="px-8 pb-8 pt-30 h-screen top-0 flex">
+        <div class="grid grid-cols-3 gap-8 w-full">
+            <div
+                class="grid grid-cols-1 gap-4 h-full place-content-center justify-items-center"
+            >
+                <button
+                    class="weird-button transition-all duration-300 hover:scale-105 w-fit"
+                >
+                    <span
+                        class="text-7xl my-auto weird-button-label font-bold"
+                    >
+                        DEADLOCK
+                    </span>
+                </button>
+                <button
+                    class="weird-button transition-all duration-300 hover:scale-105 w-fit"
+                >
+                    <span
+                        class="text-7xl my-auto weird-button-label font-bold"
+                    >
+                        MINECRAFT
+                    </span>
+                </button>
+            </div>
+
+            <div class="col-span-2">
+                <div class="flex h-full items-center justify-center">
+                    <div id="lobby-creation" class="p-5 weird-bg">
+                        <h2 class="text-3xl mb-4 select-none">Creating a <span class="font-bold" id="lobby-creation-name">...</span> lobby</h2>
+
+                        <label class="block" for="lobby-username">What should we call you?</label>
+                        <input
+                            class="block"
+                            type="text"
+                            id="lobby-username"
+                            maxlength="16"
+                            minlength="1"
+                            placeholder="Username"
+                            required
+                            data-1p-ignore
+                        />
+
+                        <br/>
+                        <button id="create-room" class="btn-green inline-block mt-8 hover:scale-110 p-2 px-4">Open lobby</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

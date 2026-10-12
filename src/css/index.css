@@ -202,3 +202,22 @@ dialog {
         @apply text-white;
     }
 }
+
+.card-bg {
+    color: var(--bg-color);
+    @apply relative p-8;
+
+    &::before {
+        content: "";
+        z-index: -1;
+        background-color: var(--text-color);
+        clip-path: polygon(
+            1.3% 2%,
+            98% 1%,
+            99% 98.3%,
+            3% 98%
+        );
+        @apply inset-0 absolute;
+    }
+    
+}
