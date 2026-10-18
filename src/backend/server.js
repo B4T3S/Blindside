@@ -22,7 +22,7 @@ app.set('view engine', 'twig');
 // Set up session handling
 app.use(session({
   store: new SQLiteStore({
-    db: 'database.sqlite',
+    db: 'sessions.sqlite',
     dir: './',
     table: 'sessions'
   }),

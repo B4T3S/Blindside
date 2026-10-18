@@ -1,6 +1,7 @@
 node_modules
 output.css
 database.sqlite
+sessions.sqlite
 .env
 
 # Statically generated content
