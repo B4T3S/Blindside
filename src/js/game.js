@@ -30,6 +30,8 @@ export class Game {
     this.socket.init().then(id => {
       this.clientId = id;
     });
+
+    this.socket.onEvent("hostMigrated", () => this._toggleLobbySettings());
   }
 
   async createRoom(username) {
@@ -39,6 +41,8 @@ export class Game {
       this.socket.updateStorage("roomCode", "set", roomCode);
       this.socket.updateStorage("phase", "set", GamePhase.LOBBY);
       await this.socket.sendRequest("setUsername", username);
+
+      this._toggleLobbySettings();
     } catch (ex) {
       console.error(ex);
     }
@@ -48,6 +52,8 @@ export class Game {
     try {
       await this.socket.joinRoom(roomCode);
       await this.socket.sendRequest("setUsername", username);
+
+      this._toggleLobbySettings();
     } catch (ex) {
       console.error(ex);
     }
@@ -150,6 +156,11 @@ export class Game {
 
       playerContainer.appendChild(playerNode);
     }
+  }
+
+  _toggleLobbySettings() {
+    const lobbySetting = document.getElementById("lobby-settings");
+    lobbySetting.hidden = !this.socket.isHost;
   }
 
   _subscribe(elementId, property, callback) {
