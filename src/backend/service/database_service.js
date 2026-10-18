@@ -55,4 +55,18 @@ export class DatabaseService {
       });
     });
   }
+
+  add_game(name, splash_art_url) {
+    const insert = this.db.prepare('INSERT INTO media (name, splash_art_url) VALUES(?, ?);');
+
+    insert.run(name, splash_art_url);
+    insert.finalize();
+  }
+
+  delete_game(id) {
+    const del = this.db.prepare('DELETE FROM media WHERE id = ?');
+
+    del.run(id);
+    del.finalize();
+  }
 }

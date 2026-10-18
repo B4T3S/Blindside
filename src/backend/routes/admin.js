@@ -1,6 +1,7 @@
-import { Router } from 'express';
+import { Router, urlencoded } from 'express';
 import { DiscordAuthService } from '../service/discord_auth_service.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
+import { DatabaseService } from '../service/database_service.js';
 
 export function createAdminRouter(database) {
   const router = Router();
@@ -72,6 +73,21 @@ export function createAdminRouter(database) {
       hotReload: process.env.NODE_ENV !== 'production',
       games: await database.get_all_games()
     });
+  });
+
+  router.post('/media/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+    switch (req.params.action) {
+      case "add":
+        if (!req.body.name || !req.body.url) {
+          throw new Error('Missing parameter "name" or "url"!');
+        }
+
+        database.add_game(req.body.name, req.body.url);
+        return res.redirect('/admin');
+      case "delete":
+        database.delete_game(req.params.id);
+        return res.redirect('/admin');
+    }
   });
 
   // Deny unknown admin paths rather than falling through
