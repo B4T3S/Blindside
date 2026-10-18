@@ -67,6 +67,12 @@ export class Game {
     setTimeout(async () => await this.socket.sendRequest("startRound"), 3000);
   }
 
+  copyRoomCode() {
+    const roomCode = document.getElementById("room-code");
+    navigator.clipboard.writeText(roomCode.innerText);
+    // TODO: display toast to indicate the room code was copied.
+  }
+
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);

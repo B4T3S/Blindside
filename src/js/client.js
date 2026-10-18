@@ -17,3 +17,6 @@ joinRoom.addEventListener("click", async () => await game.joinRoom(joinRoomUsern
 
 const startGame = document.getElementById("start-game");
 startGame.addEventListener("click", async () => await game.startGame());
+
+const copyRoomCode = document.getElementById("copy-lobby-code");
+copyRoomCode.addEventListener("click", async () => game.copyRoomCode());
