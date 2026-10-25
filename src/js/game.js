@@ -42,6 +42,8 @@ export class Game {
       this.socket.updateStorage("phase", "set", GamePhase.LOBBY);
       await this.socket.sendRequest("setUsername", username);
 
+      this.loadMedia();
+
       this._toggleLobbySettings();
     } catch (ex) {
       console.error(ex);
@@ -77,6 +79,44 @@ export class Game {
     const roomCode = document.getElementById("room-code");
     navigator.clipboard.writeText(roomCode.innerText);
     // TODO: display toast to indicate the room code was copied.
+  }
+
+  loadMedia() {
+    fetch(`${window.location.protocol}//${window.location.host}/api/media`, {
+      method: "GET"
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      const mediaSelect = document.getElementById("media-select");
+      mediaSelect.innerHTML = "";
+      result.media.forEach((media) => {
+        let option = document.createElement("option");
+        option.value = media.id;
+        option.innerText = media.name;
+        mediaSelect.append(option);
+      });
+    });
+  }
+
+  loadCategories(mediaId) {
+    fetch(`${window.location.protocol}://${window.location.host}/api/categories/${mediaId}`, {
+      method: "GET"
+    })
+    .then((response) => {
+      return JSON.parse(response);
+    })
+    .then((result) => {
+      const categorySelect = document.getElementById("category-select");
+      categorySelect.innerHTML = "";
+      result.categories.forEach((category) => {
+        let option = document.createElement("option");
+        option.value = category.id;
+        option.innerText = category.name;
+        categorySelect.append(option);
+      });
+    });
   }
 
   _setUpKnownSubscribers() {

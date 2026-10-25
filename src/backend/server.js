@@ -140,3 +140,22 @@ function shutdown() {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
+
+
+// Get Media
+app.get("/api/media", async (req, res) => {
+  const games = await dbService.get_all_media();
+  res.json({ "media": games })
+});
+
+// Get categories
+app.get("api/categories/:mediaId", async (req, res) => {
+  const mediaId = await req.params.mediaId;
+  return this.dbService.get_all_categories(mediaId);
+});
+
+// Get options
+app.get("api/categories/:categoryId", async (req, res) => {
+  const categoryId = await req.params.categoryId;
+  return this.dbService.get_all_options(categoryId);
+})

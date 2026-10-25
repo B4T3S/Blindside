@@ -20,3 +20,6 @@ startGame.addEventListener("click", async () => await game.startGame());
 
 const copyRoomCode = document.getElementById("copy-lobby-code");
 copyRoomCode.addEventListener("click", async () => game.copyRoomCode());
+
+const mediaSelect = document.getElementById("media-select");
+mediaSelect.addEventListener("change", async () => game.loadCategories(mediaSelect.value));

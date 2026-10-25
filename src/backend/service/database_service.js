@@ -41,7 +41,7 @@ export class DatabaseService {
     });
   }
 
-  get_all_games() {
+  get_all_media() {
     return new Promise((resolve) => {
       const sql = 'SELECT * FROM media';
 
@@ -56,16 +56,60 @@ export class DatabaseService {
     });
   }
 
-  add_game(name, splash_art_url) {
+  add_media(name, splash_art_url) {
     const insert = this.db.prepare('INSERT INTO media (name, splash_art_url) VALUES(?, ?);');
 
     insert.run(name, splash_art_url);
     insert.finalize();
   }
 
-  delete_game(id) {
+  delete_media(id) {
     const del = this.db.prepare('DELETE FROM media WHERE id = ?');
 
+    del.run(id);
+    del.finalize();
+  }
+
+  get_all_categories(mediaId) {
+    return new Promise((resolve) => {
+      const sql = this.db.prepare('SELECT * FROM categories WHERE media_id = ?');
+
+      return sql.all(mediaId);
+    });
+  }
+
+  add_category(mediaId, name) {
+    const insert = this.db.prepare("INSERT INTO categories (name, media_id) VALUES(?, ?);");
+
+    insert.run(name, mediaId);
+    insert.finalize();
+  }
+
+  delete_category(id) {
+    const del = this.db.prepare("DELETE FROM category WHERE id = ?");
+
+    del.run(id);
+    del.finalize();
+  }
+
+  get_all_options(categoryId) {
+    return new Promise((resolve) => {
+      const sql = this.db.prepare('SELECT * FROM options WHERE category_id = ?');
+
+      return sql.all(categoryId);
+    })
+  }
+
+  add_option(categoryId, name, iconUrl) {
+    const insert = this.db.prepare("INSERT INTO options (name, category_id, icon_url) VALUE(?, ?, ?);");
+
+    insert.run(name, categoryId, iconUrl);
+    insert.finalize();
+  }
+
+  delete_option(id) {
+    const del = this.db.prepare("DELETE FROM options WHERE id = ?");
+    
     del.run(id);
     del.finalize();
   }

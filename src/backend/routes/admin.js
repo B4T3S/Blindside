@@ -71,7 +71,7 @@ export function createAdminRouter(database) {
   router.get('/', requireRole('role_admin'), async (_, res) => {
     res.render('admin/dashboard.html.twig', {
       hotReload: process.env.NODE_ENV !== 'production',
-      games: await database.get_all_games()
+      games: await database.get_all_media()
     });
   });
 
@@ -82,10 +82,10 @@ export function createAdminRouter(database) {
           throw new Error('Missing parameter "name" or "url"!');
         }
 
-        database.add_game(req.body.name, req.body.url);
+        database.add_media(req.body.name, req.body.url);
         return res.redirect('/admin');
       case "delete":
-        database.delete_game(req.params.id);
+        database.delete_media(req.params.id);
         return res.redirect('/admin');
     }
   });
