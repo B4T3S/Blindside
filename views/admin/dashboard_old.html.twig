@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="w-full h-full flex flex-col justify-center items-center">
+        <table class="text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-100 border-b border-slate-200">
+                <th class="py-3 px-4 font-semibold text-slate-700">#</th>
+                <th class="py-3 px-4 font-semibold text-slate-700">Name</th>
+                <th class="py-3 px-4 font-semibold text-slate-700">Splash art</th>
+                <th class="py-3 px-4 font-semibold text-slate-700">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+                {% for game in games %}
+                  <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 text-slate-600">{{ loop.index }}</td>
+                    <td class="py-3 px-4 text-slate-600">{{ game.name }}</td>
+                    <td class="py-3 px-4 text-slate-600">{% if game.splash_art_url %}<img src="{{ game.splash_art_url }}" class="w-24" />{% endif %}</td>
+                    <td class="py-3 px-4 text-slate-600">
+                        <form action="admin/media/delete/{{ game.id }}" method="POST">
+                            <button type="submit" class="bg-red-500 p-2">Del</button>
+                        </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="POST" action="admin/media/add" class="mt-5">
+            <h2>Add new game</h2>
+            <input name="name" placeholder="Name" type="text" data-1p-ignore />
+            <input name="url" placeholder="Splash art URL" type="url" data-1p-ignore />
+            <button type="submit" class="bg-green-500 p-2">Save</button>
+        </form>
+    </div>
+{% endblock %}

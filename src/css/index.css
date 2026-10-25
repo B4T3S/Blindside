@@ -254,5 +254,44 @@ button {
         );
         @apply inset-0 absolute;
     }
-    
+}
+
+.cream-bg {
+    background-color: var(--text-color);
+}
+
+.dark-text {
+    color: var(--bg-color);
+}
+
+/* ADMIN PANEL */
+.admin {
+    @apply font-sans;
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: normal;
+
+    table td {
+        @apply py-2;
+    }
+
+    .btn-green {
+        @apply text-black cursor-pointer relative transition-all;
+        background-color: var(--green);
+
+        &:hover {
+            background-color: var(--green-secondary);
+            @apply text-white;
+        }
+    }
+
+    .btn-red {
+        @apply text-black cursor-pointer relative transition-all;
+        background-color: var(--red);
+
+        &:hover {
+            background-color: var(--red-secondary);
+            @apply text-white;
+        }
+    }
 }

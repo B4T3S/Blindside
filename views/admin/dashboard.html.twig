@@ -1,37 +1,117 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-    <div class="w-full h-full flex flex-col justify-center items-center">
-        <table class="text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-100 border-b border-slate-200">
-                <th class="py-3 px-4 font-semibold text-slate-700">#</th>
-                <th class="py-3 px-4 font-semibold text-slate-700">Name</th>
-                <th class="py-3 px-4 font-semibold text-slate-700">Splash art</th>
-                <th class="py-3 px-4 font-semibold text-slate-700">Options</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200">
-                {% for game in games %}
-                  <tr class="hover:bg-slate-50">
-                    <td class="py-3 px-4 text-slate-600">{{ loop.index }}</td>
-                    <td class="py-3 px-4 text-slate-600">{{ game.name }}</td>
-                    <td class="py-3 px-4 text-slate-600">{% if game.splash_art_url %}<img src="{{ game.splash_art_url }}" class="w-24" />{% endif %}</td>
-                    <td class="py-3 px-4 text-slate-600">
-                        <form action="admin/media/delete/{{ game.id }}" method="POST">
-                            <button type="submit" class="bg-red-500 p-2">Del</button>
-                        </form>
-                    </td>
-                  </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="admin w-screen h-screen px-8 pb-8 pt-30">
+        <div class="grid grid-cols-4 gap-8 w-full h-full">
 
-        <form method="POST" action="admin/media/add" class="mt-5">
-            <h2>Add new game</h2>
-            <input name="name" placeholder="Name" type="text" data-1p-ignore />
-            <input name="url" placeholder="Splash art URL" type="url" data-1p-ignore />
-            <button type="submit" class="bg-green-500 p-2">Save</button>
-        </form>
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Media:</h1>
+                    <button id="add-media" class="btn-green px-2 py-1">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for game in games %}
+                            <tr class="hover:bg-stone-300 px-1">
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ game.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="admin/media/delete/{{ game.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Categories:</h1>
+                    <button id="add-category" class="btn-green px-2 py-1">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for category in categories %}
+                            <tr class="hover:bg-stone-300 px-1">
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ category.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="admin/categories/delete/{{ category.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Options:</h1>
+                    <button id="add-option" class="btn-green px-2 py-1">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for option in options %}
+                            <tr class="hover:bg-stone-300 px-1">
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ option.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="admin/options/delete/{{ option.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full justify-center grid">
+                <div id="create-media" class="card-bg h-fit my-auto">
+                    <h1 class="font-bold text-2xl">Create Media:</h1>
+
+                    <form method="POST" action="admin/media/add">
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Splash Art URL:</label>
+                            <input name="url" type="url" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-media" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- <td class="py-3 px-4 text-slate-600">{% if game.splash_art_url %}<img src="{{ game.splash_art_url }}" class="w-24" />{% endif %}</td> -->
     </div>
 {% endblock %}
