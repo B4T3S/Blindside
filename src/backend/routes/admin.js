@@ -68,10 +68,11 @@ export function createAdminRouter(database) {
   router.use(requireAuth);
 
   // Protected routes
-  router.get('/', requireRole('role_admin'), async (_, res) => {
+  router.get('/{:media}', requireRole('role_admin'), async (req, res) => {
     res.render('admin/dashboard.html.twig', {
       hotReload: process.env.NODE_ENV !== 'production',
-      games: await database.get_all_media()
+      games: await database.get_all_media(),
+      selectedMedia: req.params.media
     });
   });
 
