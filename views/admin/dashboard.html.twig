@@ -7,7 +7,7 @@
             <div class="h-full cream-bg dark-text p-4">
                 <div class="flex flex-row justify-between">
                     <h1 class="font-bold text-2xl w-fit content-center">Media:</h1>
-                    <button id="add-media" class="btn-green px-2 py-1">
+                    <button id="add-media" data-action="click->admin#addMedia" class="btn-green px-2 py-1">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -15,7 +15,7 @@
                 <table class="text-left border-collapse w-full mt-2">
                     <tbody class="divide-y divide-stone-500">
                         {% for game in games %}
-                            <tr class="hover:bg-stone-300 px-1">
+                            <tr class="hover:bg-stone-300 {% if selectedMedia == game.id %} bg-red-500 {% endif %} px-1" data-action="click->admin#selectMedia" data-id="{{ game.id }}">
                                 <td class="ps-1">{{ loop.index }}.</td>
                                 <td>{{ game.name }}</td>
                                 <td class="text-right w-5">
@@ -34,7 +34,7 @@
             <div class="h-full cream-bg dark-text p-4">
                 <div class="flex flex-row justify-between">
                     <h1 class="font-bold text-2xl w-fit content-center">Categories:</h1>
-                    <button id="add-category" class="btn-green px-2 py-1">
+                    <button id="add-category" data-action="click->admin#addCategory" class="btn-green px-2 py-1">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -61,7 +61,7 @@
             <div class="h-full cream-bg dark-text p-4">
                 <div class="flex flex-row justify-between">
                     <h1 class="font-bold text-2xl w-fit content-center">Options:</h1>
-                    <button id="add-option" class="btn-green px-2 py-1">
+                    <button id="add-option" data-action="click->admin#addOption" class="btn-green px-2 py-1">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -89,7 +89,7 @@
                 <div id="create-media" class="card-bg h-fit my-auto">
                     <h1 class="font-bold text-2xl">Create Media:</h1>
 
-                    <form method="POST" action="admin/media/add">
+                    <form method="POST" action="/admin/media/add">
                         <div class="flex flex-col">
                             <label class="input-label mb-0!">Name:</label>
                             <input name="name" type="text" class="w-full" data-1p-ignore>
