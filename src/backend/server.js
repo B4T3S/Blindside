@@ -155,7 +155,7 @@ app.get("api/categories/:mediaId", async (req, res) => {
 });
 
 // Get options
-app.get("api/categories/:categoryId", async (req, res) => {
+app.get("api/options/:categoryId", async (req, res) => {
   const categoryId = await req.params.categoryId;
   return this.dbService.get_all_options(categoryId);
 })
