@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
     "connect-sqlite3": "^0.9.18",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
