@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/static/assets/fontawesome/css/solid.css" />
         <title>Guess Who? - Admin panel</title>
     </head>
-    <body class="bg-guess-who h-screen">
+    <body class="bg-guess-who h-screen" data-controller="admin">
         <div class="header">
             <div class="flex">
                 <a href="#" class="text-7xl font-bold title-font">Guess Who?</a>
@@ -25,6 +25,7 @@
 
         {% block body %}{% endblock %}
 
+        <script type="module" src="/static/js/admin.js"></script>
         {% if hotReload %}
             <script type="module" src="/static/js/hot-reload.js"></script>
         {% endif %}
