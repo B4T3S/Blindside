@@ -109,6 +109,50 @@
                         </div>
                     </form>
                 </div>
+
+                <div id="create-category" class="card-bg h-fit my-auto" hidden>
+                    <h1 class="font-bold text-2xl">Create Category:</h1>
+
+                    <form method="POST" action="admin/category/add">
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-category" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="create-option" class="card-bg h-fit my-auto" hidden>
+                    <h1 class="font-bold text-2xl">Create Option:</h1>
+
+                    <form method="POST" action="admin/option/add">
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Splash Art URL:</label>
+                            <input name="url" type="url" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-media" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
 
