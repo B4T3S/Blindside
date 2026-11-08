@@ -1,4 +1,9 @@
 import { Game } from "./game.js";
+import { Application } from "@hotwired/stimulus";
+import { LobbyController } from "./stimulus/lobbyController.js";
+
+window.Stimulus = Application.start();
+Stimulus.register("lobby", LobbyController);
 
 const game = new Game();
 
@@ -20,6 +25,3 @@ startGame.addEventListener("click", async () => await game.startGame());
 
 const copyRoomCode = document.getElementById("copy-lobby-code");
 copyRoomCode.addEventListener("click", async () => game.copyRoomCode());
-
-const mediaSelect = document.getElementById("media-select");
-mediaSelect.addEventListener("change", async () => game.loadCategories(mediaSelect.value));

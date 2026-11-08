@@ -44,6 +44,24 @@ app.use('/admin', createAdminRouter(dbService));
 // Serve static folder
 app.use('/static', express.static('./static'));
 
+// Get Media
+app.get("/api/media", async (req, res) => {
+  const games = await dbService.get_all_media();
+  res.json({ "media": games })
+});
+
+// Get categories
+app.get("/api/categories/:mediaId", async (req, res) => {
+  const mediaId = req.params.mediaId;
+  res.json(await dbService.get_all_categories(mediaId));
+});
+
+// Get options
+app.get("/api/options/:categoryId", async (req, res) => {
+  const categoryId = req.params.categoryId;
+  res.json(await dbService.get_all_options(categoryId));
+})
+
 // Serve base route
 app.get('/', (req, res) => {
   res.render('index.html.twig', { hotReload });
@@ -71,30 +89,35 @@ playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, dat
     case "startGame":
       if (playSocketServer.getRoomStorage(roomId)?.phase !== GamePhase.INGAME) {
         playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.INGAME);
+        playSocketServer.updateRoomStorage(roomId, "media", "set", data.media);
+        playSocketServer.updateRoomStorage(roomId, "category", "set", data.category);
       } else {
         return "Game already in progress!";
       }
       break;
     case "startRound":
-      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", generateUsernames(roomId));
+      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUsernames(roomId));
       break;
   }
 });
 
-function generateUsernames(roomId) {
+async function generateUsernames(roomId) {
   const players = playSocketServer.getRoomStorage(roomId)?.players;
-  // TODO: Find better way to store names/images etc.
-  let namePool = ["Vindicta", "The Lash", "Beebop", "The Doorman"];
-  shuffleArray(namePool);
+  const category = playSocketServer.getRoomStorage(roomId)?.category;
+
+  let options = await dbService.get_all_options(category);
+  shuffleArray(options);
 
   if (!players) return;
 
   var playerNames = {};
 
   for (const [id, name] of Object.entries(players)) {
+    const option = options.pop();
     playerNames[id] = {
-        "target": namePool.pop(),
-        "playerName": name
+        "target": option.name,
+        "image": option.icon_url,
+        "playerName": name,
       }
   }
 
@@ -140,22 +163,3 @@ function shutdown() {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
-
-
-// Get Media
-app.get("/api/media", async (req, res) => {
-  const games = await dbService.get_all_media();
-  res.json({ "media": games })
-});
-
-// Get categories
-app.get("api/categories/:mediaId", async (req, res) => {
-  const mediaId = await req.params.mediaId;
-  return this.dbService.get_all_categories(mediaId);
-});
-
-// Get options
-app.get("api/options/:categoryId", async (req, res) => {
-  const categoryId = await req.params.categoryId;
-  return this.dbService.get_all_options(categoryId);
-})

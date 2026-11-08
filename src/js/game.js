@@ -42,8 +42,6 @@ export class Game {
       this.socket.updateStorage("phase", "set", GamePhase.LOBBY);
       await this.socket.sendRequest("setUsername", username);
 
-      this.loadMedia();
-
       this._toggleLobbySettings();
     } catch (ex) {
       console.error(ex);
@@ -70,7 +68,18 @@ export class Game {
   }
 
   async startGame() {
-    await this.socket.sendRequest("startGame");
+    const media = document.getElementById("media-select").value;
+    const category = document.getElementById("category-select").value;
+
+    if (!media || !category) {
+      console.error("Media or category not selected. Cannot start game.");
+      return;
+    }
+
+    await this.socket.sendRequest("startGame", {
+      "media": media,
+      "category": category
+    });
 
     setTimeout(async () => await this.socket.sendRequest("startRound"), 3000);
   }
@@ -81,48 +90,10 @@ export class Game {
     // TODO: display toast to indicate the room code was copied.
   }
 
-  loadMedia() {
-    fetch(`${window.location.protocol}//${window.location.host}/api/media`, {
-      method: "GET"
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((result) => {
-      const mediaSelect = document.getElementById("media-select");
-      mediaSelect.innerHTML = "";
-      result.media.forEach((media) => {
-        let option = document.createElement("option");
-        option.value = media.id;
-        option.innerText = media.name;
-        mediaSelect.append(option);
-      });
-    });
-  }
-
-  loadCategories(mediaId) {
-    fetch(`${window.location.protocol}://${window.location.host}/api/categories/${mediaId}`, {
-      method: "GET"
-    })
-    .then((response) => {
-      return JSON.parse(response);
-    })
-    .then((result) => {
-      const categorySelect = document.getElementById("category-select");
-      categorySelect.innerHTML = "";
-      result.categories.forEach((category) => {
-        let option = document.createElement("option");
-        option.value = category.id;
-        option.innerText = category.name;
-        categorySelect.append(option);
-      });
-    });
-  }
-
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
-    
+
     this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList));
 
     this._subscribe("playerNames", "playerNames", (playerData) => this._showPlayerFrames(playerData));
@@ -172,11 +143,11 @@ export class Game {
         break;
     }
   }
-  
+
   _showPlayerNames(playerList) {
     const playerContainer = document.getElementById("players");
     playerContainer.innerHTML = "";
-    
+
     for (const playerName of Object.values(playerList)) {
       const playerNameFrame = document.importNode(document.getElementById("player-name").content, true);
       playerNameFrame.querySelector("li").innerText = playerName;
@@ -192,7 +163,13 @@ export class Game {
       const isOwnCharacter = id == this.clientId;
 
       playerNode.querySelector("h1").innerText = isOwnCharacter ? "???" : data["target"];
+      playerNode.querySelector("img").src = data["image"];
       playerNode.querySelector("h2").innerText = data["playerName"];
+
+      if (isOwnCharacter) {
+        playerNode.querySelector("img").hidden = true;
+        playerNode.querySelector('div[name="self-image"]').hidden = false;
+      }
 
       playerContainer.appendChild(playerNode);
     }

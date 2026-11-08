@@ -112,9 +112,9 @@ export class DatabaseService {
         insert.finalize();
         resolve(id);
       });
-      
+
     });
-    
+
   }
 
   delete_category(id) {
@@ -159,7 +159,7 @@ export class DatabaseService {
 
   delete_option(id) {
     const del = this.db.prepare("DELETE FROM options WHERE id = ?");
-    
+
     del.run(id);
     del.finalize();
   }

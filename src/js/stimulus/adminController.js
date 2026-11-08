@@ -4,7 +4,6 @@ export class AdminController extends Controller {
   static targets = ["createMedia", "createMediaImage", "createCategory", "createOption", "createOptionImage", "editCard"];
 
   connect() {
-    console.log("Admin controller connected!");
     this.resetAllCards();
   }
 
@@ -21,21 +20,18 @@ export class AdminController extends Controller {
   }
 
   addMedia() {
-    console.log("Add media clicked");
     this.hideAllEditCards();
     this.resetCreateMedia();
     this.createMediaTarget.hidden = false;
   }
 
   addCategory() {
-    console.log("Add category clicked");
     this.hideAllEditCards();
     this.resetCreateCategory();
     this.createCategoryTarget.hidden = false;
   }
 
   addOption() {
-    console.log("Add option clicked");
     this.hideAllEditCards();
     this.resetCreateOption();
     this.createOptionTarget.hidden = false;
