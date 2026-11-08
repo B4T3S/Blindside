@@ -9,9 +9,10 @@ export class DatabaseService {
 
     // Create tables
     this.db.exec('CREATE TABLE IF NOT EXISTS media (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, splash_art_url TEXT);');
-    this.db.exec('CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, media_id INTEGER NOT NULL, FOREIGN KEY(media_id) REFERENCES media(id))');
-    this.db.exec('CREATE TABLE IF NOT EXISTS options (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, icon_url TEXT, category_id INTEGER NOT NULL, FOREIGN KEY(category_id) REFERENCES categories(id))');
+    this.db.exec('CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, media_id INTEGER NOT NULL, FOREIGN KEY(media_id) REFERENCES media(id) ON DELETE CASCADE)');
+    this.db.exec('CREATE TABLE IF NOT EXISTS options (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, icon_url TEXT, category_id INTEGER NOT NULL, FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE CASCADE)');
     this.db.exec('CREATE TABLE IF NOT EXISTS user_roles (identifier TEXT NOT NULL, role TEXT NOT NULL, PRIMARY KEY(identifier,role))');
+    this.db.run('PRAGMA foreign_keys = ON');
   }
 
   add_user_role(identifier, role) {
@@ -57,10 +58,21 @@ export class DatabaseService {
   }
 
   add_media(name, splash_art_url) {
-    const insert = this.db.prepare('INSERT INTO media (name, splash_art_url) VALUES(?, ?);');
+    return new Promise((resolve) => {
+      const insert = this.db.prepare('INSERT INTO media (name, splash_art_url) VALUES(?, ?);');
 
-    insert.run(name, splash_art_url);
-    insert.finalize();
+      insert.run(name, splash_art_url, function (err) {
+        if(err) {
+          console.log(err);
+          return;
+        }
+
+        const id = this.lastID;
+
+        insert.finalize();
+        resolve(id);
+      });
+    });
   }
 
   delete_media(id) {
@@ -74,15 +86,35 @@ export class DatabaseService {
     return new Promise((resolve) => {
       const sql = this.db.prepare('SELECT * FROM categories WHERE media_id = ?');
 
-      return sql.all(mediaId);
+      sql.all(mediaId, (err, rows) => {
+        if (err) {
+          console.error(err);
+          return [];
+        }
+
+        resolve(rows);
+      });
     });
   }
 
   add_category(mediaId, name) {
-    const insert = this.db.prepare("INSERT INTO categories (name, media_id) VALUES(?, ?);");
+    return new Promise((resolve) => {
+      const insert = this.db.prepare("INSERT INTO categories (name, media_id) VALUES(?, ?);");
 
-    insert.run(name, mediaId);
-    insert.finalize();
+      insert.run(name, mediaId, function (err) {
+        if(err) {
+          console.log(err);
+          return;
+        }
+
+        const id = this.lastID;
+
+        insert.finalize();
+        resolve(id);
+      });
+      
+    });
+    
   }
 
   delete_category(id) {
@@ -96,15 +128,33 @@ export class DatabaseService {
     return new Promise((resolve) => {
       const sql = this.db.prepare('SELECT * FROM options WHERE category_id = ?');
 
-      return sql.all(categoryId);
+      sql.all(categoryId, (err, rows) => {
+        if (err) {
+          console.error(err);
+          return [];
+        }
+
+        resolve(rows);
+      });
     })
   }
 
   add_option(categoryId, name, iconUrl) {
-    const insert = this.db.prepare("INSERT INTO options (name, category_id, icon_url) VALUE(?, ?, ?);");
+    return new Promise((resolve) => {
+      const insert = this.db.prepare("INSERT INTO options (name, category_id, icon_url) VALUES(?, ?, ?);");
 
-    insert.run(name, categoryId, iconUrl);
-    insert.finalize();
+      insert.run(name, categoryId, iconUrl, function(err) {
+        if(err) {
+          console.log(err);
+          return;
+        }
+
+        const id = this.lastID;
+
+        insert.finalize();
+        resolve(id);
+      });
+    });
   }
 
   delete_option(id) {

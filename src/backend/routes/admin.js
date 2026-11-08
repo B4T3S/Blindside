@@ -68,11 +68,19 @@ export function createAdminRouter(database) {
   router.use(requireAuth);
 
   // Protected routes
-  router.get('/{:media}', requireRole('role_admin'), async (req, res) => {
+  router.get('/{:media}{/:category}{/:option}', requireRole('role_admin'), async (req, res) => {
+    const selectedMedia = req.params.media;
+    const selectedCategory = req.params.category;
+    const selectedOption = req.params.option;
+
     res.render('admin/dashboard.html.twig', {
       hotReload: process.env.NODE_ENV !== 'production',
       games: await database.get_all_media(),
-      selectedMedia: req.params.media
+      categories: selectedMedia ? await database.get_all_categories(selectedMedia) : [],
+      options: selectedCategory ? await database.get_all_options(selectedCategory) : [],
+      selectedMedia: selectedMedia,
+      selectedCategory: selectedCategory,
+      selectedOption: selectedOption
     });
   });
 
@@ -83,10 +91,49 @@ export function createAdminRouter(database) {
           throw new Error('Missing parameter "name" or "url"!');
         }
 
-        database.add_media(req.body.name, req.body.url);
-        return res.redirect('/admin');
+        const id = await database.add_media(req.body.name, req.body.url);
+        if(!id)
+          return res.redirect('/admin');
+
+        return res.redirect(`/admin/${id}`);
       case "delete":
         database.delete_media(req.params.id);
+        return res.redirect('/admin');
+    }
+  });
+
+  router.post('/category/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+    switch (req.params.action) {
+      case "add":
+        if (!req.body.name || !req.body.mediaId) {
+          throw new Error('Missing parameter "name" or "mediaId"!');
+        }
+
+        const id = await database.add_category(req.body.mediaId, req.body.name);
+        if(!id)
+            return res.redirect('/admin');
+        
+        return res.redirect(`/admin/${req.body.mediaId}/${id}`);
+      case "delete":
+        database.delete_category(req.params.id);
+        return res.redirect('/admin');
+    }
+  });
+
+  router.post('/option/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+    switch (req.params.action) {
+      case "add":
+        if (!req.body.name || !req.body.url || !req.body.categoryId) {
+          throw new Error('Missing parameter "name", "url" or "categoryId"!');
+        }
+
+        const id = await database.add_option(req.body.categoryId, req.body.name, req.body.url);
+        if(!id)
+          return res.redirect('/admin');
+
+        return res.redirect(`/admin/${req.body.mediaId}/${req.body.categoryId}/${id}`);
+      case "delete":
+        database.delete_option(req.params.id);
         return res.redirect('/admin');
     }
   });
