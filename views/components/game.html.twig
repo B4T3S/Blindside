@@ -1,6 +1,15 @@
 <div id="game" class="w-screen h-screen fixed z-0 bg-guess-who">
-    <div class="h-full flex items-center justify-center">
+    <div class="h-full flex flex-col items-center justify-center">
         <div class="flex flex-row" id="player-container">
+        </div>
+        <div id="guess-options" class="flex flex-col items-center justify-center mt-5" hidden>
+            <p>Ask your question, take your guess...</p>
+
+            <p class="my-2">Was your guess correct?</p>
+            <span>
+                <button id="guess-correct" class="btn-green p-2 px-4 me-4">YES</button>
+                <button id="guess-incorrect" class="btn-red p-2 px-4">NO</button>
+            </span>
         </div>
     </div>
 </div>

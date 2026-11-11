@@ -40,7 +40,7 @@ export class Game {
 
       this.socket.updateStorage("roomCode", "set", roomCode);
       this.socket.updateStorage("phase", "set", GamePhase.LOBBY);
-      await this.socket.sendRequest("setUsername", username);
+      await this.socket.sendRequest("initializePlayer", username);
 
       this._toggleLobbySettings();
     } catch (ex) {
@@ -51,7 +51,7 @@ export class Game {
   async joinRoom(username, roomCode) {
     try {
       await this.socket.joinRoom(roomCode);
-      await this.socket.sendRequest("setUsername", username);
+      await this.socket.sendRequest("initializePlayer", username);
 
       this._toggleLobbySettings();
     } catch (ex) {
@@ -90,13 +90,21 @@ export class Game {
     // TODO: display toast to indicate the room code was copied.
   }
 
+  guessCorrect() {
+    this.socket.sendRequest("guessCorrect");
+  }
+
+  guessIncorrect() {
+    this.socket.sendRequest("guessIncorrect");
+  }
+
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
 
     this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList));
 
-    this._subscribe("playerNames", "playerNames", (playerData) => this._showPlayerFrames(playerData));
+    this._subscribe("playerNames", "playerNames", (playerData) => this._reRenderTurn(playerData));
 
     this._subscribe("phase", "phase", (phase) => {
       this._handlePhaseChange(phase);
@@ -148,19 +156,27 @@ export class Game {
     const playerContainer = document.getElementById("players");
     playerContainer.innerHTML = "";
 
-    for (const playerName of Object.values(playerList)) {
+    for (const playerData of Object.values(playerList)) {
       const playerNameFrame = document.importNode(document.getElementById("player-name").content, true);
-      playerNameFrame.querySelector("li").innerText = playerName;
+      playerNameFrame.querySelector("li").innerText = playerData.username;
       playerContainer.append(playerNameFrame);
     }
   }
 
-  _showPlayerFrames(playerData) {
+  _reRenderTurn(playerData) {
     const playerContainer = document.getElementById("player-container");
+    const guessOptions = document.getElementById("guess-options");
+    const currentTurnOrder = this.storage.turnList;
 
     for (const [id, data] of Object.entries(playerData)) {
       const playerNode = document.importNode(document.getElementById("player-frame").content, true);
       const isOwnCharacter = id == this.clientId;
+
+      if (id == currentTurnOrder[0]) {
+        console.log(playerNode);
+        console.log(playerNode.firstChild);
+        playerNode.querySelector("div").classList.add("border-4", "border-green-300");
+      }
 
       playerNode.querySelector("h1").innerText = isOwnCharacter ? "???" : data["target"];
       playerNode.querySelector("img").src = data["image"];
@@ -173,6 +189,8 @@ export class Game {
 
       playerContainer.appendChild(playerNode);
     }
+
+    guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
   }
 
   _toggleLobbySettings() {

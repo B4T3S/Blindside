@@ -83,25 +83,57 @@ if (hotReload) {
 // Manage events
 playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, data }) => {
   switch (name) {
-    case "setUsername":
-      playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, data);
+    case "initializePlayer":
+      playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, {
+        "username": data,
+        "score": 0,
+      });
       break;
     case "startGame":
-      if (playSocketServer.getRoomStorage(roomId)?.phase !== GamePhase.INGAME) {
-        playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.INGAME);
-        playSocketServer.updateRoomStorage(roomId, "media", "set", data.media);
-        playSocketServer.updateRoomStorage(roomId, "category", "set", data.category);
-      } else {
-        return "Game already in progress!";
-      }
-      break;
+      return startGame(roomId, data);
     case "startRound":
-      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUsernames(roomId));
+      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
       break;
+    case "guessCorrect":
+      return guess(roomId, clientId, true);
+    case "guessIncorrect":
+      return guess(roomId, clientId, false);
   }
 });
 
-async function generateUsernames(roomId) {
+function guess(roomId, clientId, correct) {
+  let turnList = playSocketServer.getRoomStorage(roomId).turnList;
+
+  if (turnList[0] != clientId) {
+    return "Player guessing out of turn!";
+  }
+
+  if (correct) {
+    let player = playSocketServer.getRoomStorage(roomId).players[clientId];
+    player.score += turnList.length;
+    turnList.shift();
+  } else {
+    turnList.push(turnList.shift());
+  }
+
+  playSocketServer.updateRoomStorage(roomId, "turnList", "set", turnList);
+}
+
+function startGame(roomId, data) {
+  if (playSocketServer.getRoomStorage(roomId)?.phase == GamePhase.INGAME) {
+    return "Game already in progress!";
+  }
+
+  playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.INGAME);
+  playSocketServer.updateRoomStorage(roomId, "media", "set", data.media);
+  playSocketServer.updateRoomStorage(roomId, "category", "set", data.category);
+
+  const playerIds = Object.keys(playSocketServer.getRoomStorage(roomId).players);
+  shuffleArray(playerIds)
+  playSocketServer.updateRoomStorage(roomId, "turnList", "set", playerIds);
+}
+
+async function generateUserOptions(roomId) {
   const players = playSocketServer.getRoomStorage(roomId)?.players;
   const category = playSocketServer.getRoomStorage(roomId)?.category;
 
@@ -112,12 +144,12 @@ async function generateUsernames(roomId) {
 
   var playerNames = {};
 
-  for (const [id, name] of Object.entries(players)) {
+  for (const [id, playerData] of Object.entries(players)) {
     const option = options.pop();
     playerNames[id] = {
         "target": option.name,
         "image": option.icon_url,
-        "playerName": name,
+        "playerName": playerData.username,
       }
   }
 
