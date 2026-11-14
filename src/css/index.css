@@ -265,10 +265,44 @@ button {
 }
 
 .background-splash {
-    background-size: cover; 
-    opacity: 0.1; 
-    z-index:-1; 
+    background-size: cover;
+    opacity: 0.1;
+    z-index:-1;
     box-shadow: inset 0 0 5em 3em #000;
+}
+
+.flip-card {
+    height: 9em;
+    aspect-ratio: 5/7;
+    background-color: transparent;
+    perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transform-style: preserve-3d;
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front {
+    transform: rotateY(0deg);
 }
 
 /* ADMIN PANEL */

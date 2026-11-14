@@ -1,9 +1,11 @@
 import { Game } from "./game.js";
 import { Application } from "@hotwired/stimulus";
 import { LobbyController } from "./stimulus/lobbyController.js";
+import { CardController } from "./stimulus/cardController.js";
 
 window.Stimulus = Application.start();
 Stimulus.register("lobby", LobbyController);
+Stimulus.register("card", CardController);
 
 const game = new Game();
 

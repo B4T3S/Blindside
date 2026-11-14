@@ -127,15 +127,12 @@ export class Game {
     const joinRoom = document.getElementById("join-room-button");
     const leaveRoom = document.getElementById("leave-room");
 
-    const playerContainer = document.getElementById("player-container");
-
     switch (phase) {
       case GamePhase.INGAME:
         lobbyScreen.classList.add("fade-out");
         gameSelect.classList.add("fade-out");
         joinRoom.hidden = true;
         leaveRoom.hidden = false;
-        playerContainer.innerHTML = "";
         break;
       case GamePhase.LOBBY:
         lobbyScreen.classList.remove("fade-out");
@@ -169,27 +166,19 @@ export class Game {
     const guessOptions = document.getElementById("guess-options");
     const currentTurnOrder = this.storage.turnList;
 
-    for (const [id, data] of Object.entries(playerData)) {
-      const playerNode = document.importNode(document.getElementById("player-frame").content, true);
-      const isOwnCharacter = id == this.clientId;
-
-      if (id == currentTurnOrder[0]) {
-        console.log(playerNode);
-        console.log(playerNode.firstChild);
-        playerNode.querySelector(".js-image-container").classList.add("border-4", "border-green-300");
-      }
-
-      playerNode.querySelector(".js-target-name").innerText = isOwnCharacter ? "???" : data["target"];
-      playerNode.querySelector(".js-image").src = data["image"];
-      playerNode.querySelector(".js-player-name").innerText = data["playerName"];
-
-      if (isOwnCharacter) {
-        playerNode.querySelector(".js-image").hidden = true;
-        playerNode.querySelector(".js-self-image").hidden = false;
-      }
-
-      playerContainer.appendChild(playerNode);
+    if (currentTurnOrder.length == 0) {
+      return;
     }
+
+    const event = new CustomEvent('revealCharacter', {
+      bubbles: true,
+      detail: {
+        player: playerData[currentTurnOrder[0]],
+        hidePlayer: this.clientId == currentTurnOrder[0]
+      }
+    });
+
+    playerContainer.dispatchEvent(event);
 
     guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
   }
