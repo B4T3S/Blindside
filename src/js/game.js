@@ -166,7 +166,13 @@ export class Game {
     const guessOptions = document.getElementById("guess-options");
     const currentTurnOrder = this.storage.turnList;
 
+    if (playerContainer.hidden) {
+      playerContainer.hidden = false;
+    }
+
     if (currentTurnOrder.length == 0) {
+      playerContainer.hidden = true;
+      guessOptions.hidden = true;
       return;
     }
 
