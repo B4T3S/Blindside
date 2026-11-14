@@ -176,16 +176,16 @@ export class Game {
       if (id == currentTurnOrder[0]) {
         console.log(playerNode);
         console.log(playerNode.firstChild);
-        playerNode.querySelector("div").classList.add("border-4", "border-green-300");
+        playerNode.querySelector(".js-image-container").classList.add("border-4", "border-green-300");
       }
 
-      playerNode.querySelector("h1").innerText = isOwnCharacter ? "???" : data["target"];
-      playerNode.querySelector("img").src = data["image"];
-      playerNode.querySelector("h2").innerText = data["playerName"];
+      playerNode.querySelector(".js-target-name").innerText = isOwnCharacter ? "???" : data["target"];
+      playerNode.querySelector(".js-image").src = data["image"];
+      playerNode.querySelector(".js-player-name").innerText = data["playerName"];
 
       if (isOwnCharacter) {
-        playerNode.querySelector("img").hidden = true;
-        playerNode.querySelector('div[name="self-image"]').hidden = false;
+        playerNode.querySelector(".js-image").hidden = true;
+        playerNode.querySelector(".js-self-image").hidden = false;
       }
 
       playerContainer.appendChild(playerNode);
