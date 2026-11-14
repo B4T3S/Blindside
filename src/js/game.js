@@ -158,7 +158,8 @@ export class Game {
 
     for (const playerData of Object.values(playerList)) {
       const playerNameFrame = document.importNode(document.getElementById("player-name").content, true);
-      playerNameFrame.querySelector("li").innerText = playerData.username;
+      playerNameFrame.querySelector(".name").innerText = playerData.username;
+      playerNameFrame.querySelector(".score").innerText = playerData.score;
       playerContainer.append(playerNameFrame);
     }
   }
