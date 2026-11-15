@@ -32,6 +32,8 @@ export class Game {
     });
 
     this.socket.onEvent("hostMigrated", () => this._toggleLobbySettings());
+
+    this.turnOrderLength = 0;
   }
 
   async createRoom(username) {
@@ -206,13 +208,16 @@ export class Game {
       bubbles: true,
       detail: {
         player: playerData[currentTurnOrder[0]],
-        hidePlayer: this.clientId == currentTurnOrder[0]
+        hidePlayer: this.clientId == currentTurnOrder[0],
+        guessedCorrectly: this.turnOrderLength - 1 == currentTurnOrder.length
       }
     });
 
     playerContainer.dispatchEvent(event);
 
     guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
+
+    this.turnOrderLength = currentTurnOrder.length;
   }
 
   _toggleLobbySettings() {

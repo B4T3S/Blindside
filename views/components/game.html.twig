@@ -5,6 +5,12 @@
                 <div class="flip-card-inner" data-controller="card">
                     <!-- BEGIN FRONT SIDE -->
                     <div class="flip-card-front cream-bg player-card" data-card-target="front">
+                        <div class="!absolute !px-8 top-45 left-8 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
+                            GUESSED!
+                        </div>
+                        <div class="!absolute !px-8 top-45 left-18 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
+                            NEXT!
+                        </div>
                         <div class="target-header dark-text">
                             <i class="fa-solid fa-eye"></i>
                             <span class="js-target-name">Target Name</span>
@@ -25,6 +31,12 @@
                     <!-- END FRONT SIDE -->
                     <!-- BEGIN BACK SIDE -->
                     <div class="flip-card-back cream-bg player-card" data-card-target="back">
+                        <div class="!absolute !px-8 top-45 left-8 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
+                            GUESSED!
+                        </div>
+                        <div class="!absolute !px-8 top-45 left-18 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
+                            NEXT!
+                        </div>
                         <div class="target-header dark-text">
                             <i class="fa-solid fa-eye"></i>
                             <span class="js-target-name">Target Name</span>
