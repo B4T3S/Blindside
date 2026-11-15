@@ -329,6 +329,54 @@ button {
     transform: rotateY(0deg);
 }
 
+.scoreboard {
+    @apply text-3xl;
+
+    li:nth-child(-n+3) {
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer-sweep 5s linear infinite;
+        animation-duration: 10s;
+    }
+
+    li:first-child {
+        background-image: linear-gradient(90deg,
+            #f8ad0c 0%,
+            #ed9624 30%,
+            #e36e1b 50%,
+            #ed9624 70%,
+            #f8ad0c 100%
+        );
+    }
+
+    li:nth-child(2) {
+        background-image: linear-gradient(90deg,
+            #a4b1b3 0%,
+            #7b8586 30%,
+            #606869 50%,
+            #7b8586 70%,
+            #a4b1b3 100%
+        );
+    }
+
+    li:nth-child(3) {
+        background-image: linear-gradient(90deg,
+            #c59d8d 0%,
+            #9c7262 30%,
+            #7c5647 50%,
+            #9c7262 70%,
+            #c59d8d 100%
+        );
+    }
+}
+
+@keyframes shimmer-sweep {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+
 /* ADMIN PANEL */
 .admin {
     @apply font-sans;

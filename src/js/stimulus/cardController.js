@@ -23,6 +23,8 @@ export class CardController extends Controller {
     target.querySelector(".js-image").hidden = hidePlayer;
     target.querySelector(".js-self-image").hidden = !hidePlayer;
 
+    //TODO: give players visual indicator if player guessed correctly or not
+
     animate(this.element, {
       rotateY: this.flipped ? { from: '180deg', to: '360deg' } : { from: '0deg', to: '180deg' },
       duration: 1000

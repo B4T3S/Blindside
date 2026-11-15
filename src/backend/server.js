@@ -94,6 +94,15 @@ playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, dat
     case "startRound":
       playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
       break;
+    case "replay":
+      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
+      const playerIds = Object.keys(playSocketServer.getRoomStorage(roomId).players);
+      shuffleArray(playerIds)
+      playSocketServer.updateRoomStorage(roomId, "turnList", "set", playerIds);
+      break;
+    case "lobbyReturn": 
+      playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.LOBBY);
+      break;
     case "guessCorrect":
       return guess(roomId, clientId, true);
     case "guessIncorrect":
@@ -111,16 +120,20 @@ function guess(roomId, clientId, correct) {
   if (correct) {
     let player = playSocketServer.getRoomStorage(roomId).players[clientId];
     player.score += turnList.length;
+    playSocketServer.updateRoomStorage(roomId, "players", "object-set-key", clientId, player);
+
     turnList.shift();
   } else {
     turnList.push(turnList.shift());
   }
 
+  
   playSocketServer.updateRoomStorage(roomId, "turnList", "set", turnList);
 }
 
 function startGame(roomId, data) {
-  if (playSocketServer.getRoomStorage(roomId)?.phase == GamePhase.INGAME) {
+  let turnList = playSocketServer.getRoomStorage(roomId).turnList;
+  if (playSocketServer.getRoomStorage(roomId)?.phase == GamePhase.INGAME && turnList.length > 0) {
     return "Game already in progress!";
   }
 

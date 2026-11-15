@@ -81,6 +81,8 @@ export class Game {
       "category": category
     });
 
+    // TODO: display countdown
+
     setTimeout(async () => await this.socket.sendRequest("startRound"), 3000);
   }
 
@@ -98,11 +100,24 @@ export class Game {
     this.socket.sendRequest("guessIncorrect");
   }
 
+  returnToLobby() {
+    this.socket.sendRequest("lobbyReturn");
+  }
+
+  replay() {
+    const winnerScreen = document.getElementById("winner-screen");
+    winnerScreen.hidden = true;
+
+    // TODO: display countdown
+
+    setTimeout(async () => await this.socket.sendRequest("replay"), 3000);
+  }
+
   _setUpKnownSubscribers() {
     const roomCode = document.getElementById("room-code");
     this._subscribe("roomCode", "roomCode", (code) => roomCode.innerText = code);
 
-    this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList));
+    this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList, "players"));
 
     this._subscribe("playerNames", "playerNames", (playerData) => this._reRenderTurn(playerData));
 
@@ -127,12 +142,15 @@ export class Game {
     const joinRoom = document.getElementById("join-room-button");
     const leaveRoom = document.getElementById("leave-room");
 
+    const winnerScreen = document.getElementById("winner-screen");
+
     switch (phase) {
       case GamePhase.INGAME:
         lobbyScreen.classList.add("fade-out");
         gameSelect.classList.add("fade-out");
         joinRoom.hidden = true;
         leaveRoom.hidden = false;
+        winnerScreen.hidden = true;
         break;
       case GamePhase.LOBBY:
         lobbyScreen.classList.remove("fade-out");
@@ -149,11 +167,13 @@ export class Game {
     }
   }
 
-  _showPlayerNames(playerList) {
-    const playerContainer = document.getElementById("players");
+  _showPlayerNames(playerList, container) {
+    const playerContainer = document.getElementById(container);
     playerContainer.innerHTML = "";
 
-    for (const playerData of Object.values(playerList)) {
+    const scoreSortedPlayerList = Object.values(playerList).sort((a, b) => b.score - a.score);
+
+    for (const playerData of scoreSortedPlayerList) {
       const playerNameFrame = document.importNode(document.getElementById("player-name").content, true);
       playerNameFrame.querySelector(".name").innerText = playerData.username;
       playerNameFrame.querySelector(".score").innerText = playerData.score;
@@ -173,6 +193,12 @@ export class Game {
     if (currentTurnOrder.length == 0) {
       playerContainer.hidden = true;
       guessOptions.hidden = true;
+
+      const winnerScreen = document.getElementById("winner-screen");
+      const playerData = this.storage.players;
+      this._showPlayerNames(playerData, "scoreboard-list");
+
+      winnerScreen.hidden = false;
       return;
     }
 

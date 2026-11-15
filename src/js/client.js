@@ -32,3 +32,8 @@ const guessCorrect = document.getElementById("guess-correct");
 guessCorrect.addEventListener("click", () => game.guessCorrect());
 const guessIncorrect = document.getElementById("guess-incorrect");
 guessIncorrect.addEventListener("click", () => game.guessIncorrect());
+
+const lobbyReturn = document.getElementById("lobby-return");
+lobbyReturn.addEventListener("click", () => game.returnToLobby());
+const replay = document.getElementById("replay");
+replay.addEventListener("click", () => game.replay());

@@ -46,14 +46,25 @@
                 </div>
             </div>
         </div>
-        <div id="guess-options" class="flex flex-col items-center justify-center mt-5" hidden>
+        <div id="guess-options" class="flex flex-col items-center justify-center mt-5 text-5xl" hidden>
             <p>Ask your question, take your guess...</p>
 
-            <p class="my-2">Was your guess correct?</p>
+            <p class="mt-2 mb-4">Was your guess correct?</p>
             <span>
-                <button id="guess-correct" class="btn-green p-2 px-4 me-4">YES</button>
-                <button id="guess-incorrect" class="btn-red p-2 px-4">NO</button>
+                <button id="guess-correct" class="btn-green p-2 px-4 me-4 hover:scale-105">YES</button>
+                <button id="guess-incorrect" class="btn-red p-2 px-4 hover:scale-105">NO</button>
             </span>
+        </div>
+        <div id="winner-screen" class="flex flex-col items-center justify-center" hidden>
+            <div class="weird-bg text-dark p-5 flex flex-col">
+                <div class="text-6xl title-font">Scoreboard:</div>
+
+                <ol id="scoreboard-list" class="scoreboard"></ol>
+            </div>
+            <div class="flex flex-row gap-4 mt-8 text-3xl">
+                <button id="lobby-return" class="btn-red p-2 px-4 hover:scale-105">Return to lobby</button>
+                <button id="replay" class="btn-green p-2 ps-6 pe-4 hover:scale-105">Re-play with same settings</button>
+            </div>
         </div>
     </div>
 </div>
