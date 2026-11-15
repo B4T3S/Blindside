@@ -271,8 +271,32 @@ button {
     box-shadow: inset 0 0 5em 3em #000;
 }
 
+.player-card {
+    @apply rounded-lg p-4 text-center flex flex-col;
+
+    .target-header {
+        @apply text-3xl mb-2 text-start font-bold;
+        line-height: 1;
+    }
+
+    .image-container {
+        @apply aspect-square border border-black w-full mb-2 rounded-md;
+        border-color: var(--bg-color);
+
+        img,
+        .self-image {
+            @apply w-full h-full object-cover;
+        }
+    }
+
+    .player-header {
+        @apply text-stone-600 flex-none text-end border-t pt-2;
+        border-color: var(--bg-color);
+    }
+}
+
 .flip-card {
-    height: 9em;
+    height: 20em;
     aspect-ratio: 5/7;
     background-color: transparent;
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
