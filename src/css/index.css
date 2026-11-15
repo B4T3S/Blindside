@@ -372,6 +372,32 @@ button {
     }
 }
 
+.stamp {
+    @apply text-7xl tracking-wider border-4 rounded-md px-3 py-1 relative;
+    transform: rotate(-5deg);
+
+    &:before {
+        content: "";
+        @apply border-2 inset-1 absolute;
+    }
+}
+
+.stamp-green {
+    color: var(--green);
+    border-color: var(--green);
+    &:before {
+        border-color: var(--green);
+    }
+}
+
+.stamp-red {
+    color: var(--red);
+    border-color: var(--red);
+    &:before {
+        border-color: var(--red);
+    }
+}
+
 @keyframes shimmer-sweep {
   from { background-position: 200% center; }
   to   { background-position: -200% center; }
