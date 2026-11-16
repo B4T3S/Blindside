@@ -37,3 +37,6 @@ const lobbyReturn = document.getElementById("lobby-return");
 lobbyReturn.addEventListener("click", () => game.returnToLobby());
 const replay = document.getElementById("replay");
 replay.addEventListener("click", () => game.replay());
+
+const playerContainer = document.getElementById("player-container");
+playerContainer.addEventListener("revealedCharacter", (event) => game.toggleGuessOptions());

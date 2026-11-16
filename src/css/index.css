@@ -391,10 +391,10 @@ button {
 }
 
 .stamp-red {
-    color: var(--red);
-    border-color: var(--red);
+    color: var(--red-secondary);
+    border-color: var(--red-secondary);
     &:before {
-        border-color: var(--red);
+        border-color: var(--red-secondary);
     }
 }
 

@@ -18,11 +18,25 @@ export class Game {
     // Log all status events
     this.socket.onEvent("status", status => console.log(`Status updated: ${status}`));
 
+    //Init empty storage
+    this.storage = {};
+
     // Update internal storage reference
     this.socket.onEvent("storageUpdated", async storage => {
+      // Check which keys were updated and notify only those subscribers
+      let updatedKeys = [];
+      for(const [key, value] of Object.entries(storage)) {
+        const oldValue = this.storage[key];
+
+        if(!this._isEqual(oldValue, value)) {
+          updatedKeys.push(key);
+        }
+      }
       this.storage = storage;
 
-      await this._updateSubscribers();
+      updatedKeys.forEach(key => {
+        this._updateSubscribers(key);
+      });
     });
 
     this._setUpKnownSubscribers();
@@ -70,6 +84,7 @@ export class Game {
   }
 
   async startGame() {
+    // TODO: Cards are not visually reset if you replay in the same lobby
     const media = document.getElementById("media-select").value;
     const category = document.getElementById("category-select").value;
 
@@ -111,8 +126,16 @@ export class Game {
     winnerScreen.hidden = true;
 
     // TODO: display countdown
+    // TODO: this countdown is only displayed to the lobby host and no one else.
+    // might be worth just getting rid of it
 
     setTimeout(async () => await this.socket.sendRequest("replay"), 3000);
+  }
+
+  toggleGuessOptions() {
+    const guessOptions = document.getElementById("guess-options");
+    const currentTurnOrder = this.storage.turnList;
+    guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
   }
 
   _setUpKnownSubscribers() {
@@ -121,19 +144,18 @@ export class Game {
 
     this._subscribe("players", "players", (playerList) => this._showPlayerNames(playerList, "players"));
 
-    this._subscribe("playerNames", "playerNames", (playerData) => this._reRenderTurn(playerData));
+    this._subscribe("turnList", "turnList", (turnList) => this._reRenderTurn(turnList));
 
     this._subscribe("phase", "phase", (phase) => {
       this._handlePhaseChange(phase);
     });
   }
 
-  async _updateSubscribers() {
-    for (const [key, value] of Object.entries(this.storage)) {
-      const subscriber = this._subscribers.find(sub => sub.property == key);
-      if (subscriber) {
-        await subscriber.callback(value);
-      }
+  async _updateSubscribers(updatedKey) {
+    // TODO: this subscriber update system does not specify WHICH object is updated, so all subscribers for all objects are called at all times
+    const subscriber = this._subscribers.find(sub => sub.property == updatedKey);
+    if (subscriber) {
+      await subscriber.callback(this.storage[updatedKey]);
     }
   }
 
@@ -183,27 +205,36 @@ export class Game {
     }
   }
 
-  _reRenderTurn(playerData) {
+  _reRenderTurn(currentTurnOrder) {
     const playerContainer = document.getElementById("player-container");
     const guessOptions = document.getElementById("guess-options");
-    const currentTurnOrder = this.storage.turnList;
+    const winnerScreen = document.getElementById("winner-screen");
+    const playerData = this.storage.playerNames;
 
+    // Set default hidden states
     if (playerContainer.hidden) {
       playerContainer.hidden = false;
     }
+    winnerScreen.hidden = true;
 
+    // Last player guess
     if (currentTurnOrder.length == 0) {
       playerContainer.hidden = true;
       guessOptions.hidden = true;
 
-      const winnerScreen = document.getElementById("winner-screen");
-      const playerData = this.storage.players;
-      this._showPlayerNames(playerData, "scoreboard-list");
-
+      
+      const players = this.storage.players;
+      this._showPlayerNames(players, "scoreboard-list");
       winnerScreen.hidden = false;
+
+      if(this.socket.isHost) {
+        const winnerScreenButtons = document.getElementById("winner-screen-buttons");
+        winnerScreenButtons.hidden = false;
+      }
       return;
     }
 
+    // Handle card turning
     const event = new CustomEvent('revealCharacter', {
       bubbles: true,
       detail: {
@@ -215,7 +246,8 @@ export class Game {
 
     playerContainer.dispatchEvent(event);
 
-    guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
+    // Hide guess options for all players and only unhide them in the revealedCharacter event
+    guessOptions.hidden = true;
 
     this.turnOrderLength = currentTurnOrder.length;
   }
@@ -239,5 +271,27 @@ export class Game {
     if (index) {
       this._subscribers.splice(index, 1);
     }
+  }
+
+  _isEqual(a, b) {
+    if (a === b) return true;
+
+    if (
+      typeof a !== "object" ||
+      typeof b !== "object" ||
+      a === null ||
+      b === null
+    ) {
+      return false;
+    }
+
+    const keysA = Object.keys(a);
+    const keysB = Object.keys(b);
+
+    if (keysA.length !== keysB.length) return false;
+
+    return keysA.every(key =>
+      Object.hasOwn(b, key) && this._isEqual(a[key], b[key])
+    );
   }
 }

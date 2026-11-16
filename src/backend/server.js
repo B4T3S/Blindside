@@ -92,13 +92,11 @@ playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, dat
     case "startGame":
       return startGame(roomId, data);
     case "startRound":
-      playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
+      startRound(roomId);
       break;
     case "replay":
       playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
-      const playerIds = Object.keys(playSocketServer.getRoomStorage(roomId).players);
-      shuffleArray(playerIds)
-      playSocketServer.updateRoomStorage(roomId, "turnList", "set", playerIds);
+      startRound(roomId);
       break;
     case "lobbyReturn": 
       playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.LOBBY);
@@ -131,7 +129,7 @@ function guess(roomId, clientId, correct) {
   playSocketServer.updateRoomStorage(roomId, "turnList", "set", turnList);
 }
 
-function startGame(roomId, data) {
+async function startGame(roomId, data) {
   let turnList = playSocketServer.getRoomStorage(roomId).turnList;
   if (playSocketServer.getRoomStorage(roomId)?.phase == GamePhase.INGAME && turnList.length > 0) {
     return "Game already in progress!";
@@ -141,6 +139,12 @@ function startGame(roomId, data) {
   playSocketServer.updateRoomStorage(roomId, "media", "set", data.media);
   playSocketServer.updateRoomStorage(roomId, "category", "set", data.category);
 
+  const playerNames = await generateUserOptions(roomId);
+  console.log(playerNames);
+  playSocketServer.updateRoomStorage(roomId, "playerNames", "set", playerNames);
+}
+
+function startRound(roomId, data) {
   const playerIds = Object.keys(playSocketServer.getRoomStorage(roomId).players);
   shuffleArray(playerIds)
   playSocketServer.updateRoomStorage(roomId, "turnList", "set", playerIds);
@@ -150,23 +154,24 @@ async function generateUserOptions(roomId) {
   const players = playSocketServer.getRoomStorage(roomId)?.players;
   const category = playSocketServer.getRoomStorage(roomId)?.category;
 
-  let options = await dbService.get_all_options(category);
-  shuffleArray(options);
+  return dbService.get_all_options(category).then((options) => {
+    shuffleArray(options);
 
-  if (!players) return;
+    if (!players) return;
 
-  var playerNames = {};
+    var playerNames = {};
 
-  for (const [id, playerData] of Object.entries(players)) {
-    const option = options.pop();
-    playerNames[id] = {
-        "target": option.name,
-        "image": option.icon_url,
-        "playerName": playerData.username,
-      }
-  }
+    for (const [id, playerData] of Object.entries(players)) {
+      const option = options.pop();
+      playerNames[id] = {
+          "target": option.name,
+          "image": option.icon_url,
+          "playerName": playerData.username,
+        }
+    }
 
-  return playerNames;
+    return playerNames;
+  });
 }
 
 function shuffleArray(array) {

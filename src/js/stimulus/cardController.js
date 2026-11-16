@@ -32,6 +32,12 @@ export class CardController extends Controller {
 
     // Reset stamp
     stamp.style = "opacity: 0%;";
+
+    const event = new CustomEvent('revealedCharacter', {
+      bubbles: true,
+    });
+    const playerContainer = document.getElementById("player-container");
+    playerContainer.dispatchEvent(event);
   }
 
   _animateStamp(stamp) {
