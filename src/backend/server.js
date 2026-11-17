@@ -19,7 +19,7 @@ let reloadWss = null;
 // Set view engine
 app.set('view engine', 'twig');
 
-if (process.env.TRUST_PROXY == true) {
+if (process.env.TRUST_PROXY) {
   app.set('trust proxy', process.env.TRUST_PROXY);
 }
 
