@@ -19,6 +19,10 @@ let reloadWss = null;
 // Set view engine
 app.set('view engine', 'twig');
 
+if (process.env.TRUST_PROXY == true) {
+  app.set('trust proxy', 1);
+}
+
 // Set up session handling
 app.use(session({
   store: new SQLiteStore({

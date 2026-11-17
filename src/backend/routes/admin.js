@@ -1,7 +1,6 @@
 import { Router, urlencoded } from 'express';
 import { DiscordAuthService } from '../service/discord_auth_service.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
-import { DatabaseService } from '../service/database_service.js';
 
 export function createAdminRouter(database) {
   const router = Router();
@@ -112,7 +111,7 @@ export function createAdminRouter(database) {
         const id = await database.add_category(req.body.mediaId, req.body.name);
         if(!id)
             return res.redirect('/admin');
-        
+
         return res.redirect(`/admin/${req.body.mediaId}/${id}`);
       case "delete":
         database.delete_category(req.params.id);
