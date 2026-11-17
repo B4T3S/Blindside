@@ -20,7 +20,7 @@ let reloadWss = null;
 app.set('view engine', 'twig');
 
 if (process.env.TRUST_PROXY == true) {
-  app.set('trust proxy', 1);
+  app.set('trust proxy', process.env.TRUST_PROXY);
 }
 
 // Set up session handling
