@@ -3,7 +3,7 @@ import sqlite3 from 'sqlite3'
 export class DatabaseService {
   constructor() {
     // Open database file
-    this.db = new sqlite3.Database('./database.sqlite', {
+    this.db = new sqlite3.Database('./db/database.sqlite', {
       'open': true
     });
 

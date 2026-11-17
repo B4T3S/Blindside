@@ -22,7 +22,7 @@ app.set('view engine', 'twig');
 // Set up session handling
 app.use(session({
   store: new SQLiteStore({
-    db: 'sessions.sqlite',
+    db: 'db/sessions.sqlite',
     dir: './',
     table: 'sessions'
   }),
@@ -98,7 +98,7 @@ playSocketServer.onEvent("requestReceived", async ({ roomId, clientId, name, dat
       playSocketServer.updateRoomStorage(roomId, "playerNames", "set", await generateUserOptions(roomId));
       startRound(roomId);
       break;
-    case "lobbyReturn": 
+    case "lobbyReturn":
       playSocketServer.updateRoomStorage(roomId, "phase", "set", GamePhase.LOBBY);
       break;
     case "guessCorrect":
@@ -125,7 +125,7 @@ function guess(roomId, clientId, correct) {
     turnList.push(turnList.shift());
   }
 
-  
+
   playSocketServer.updateRoomStorage(roomId, "turnList", "set", turnList);
 }
 
