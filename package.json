@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "concurrently --kill-others \"npm run serve\" \"npm run tailwind:watch\" \"npm run bundle:watch\"",
     "serve": "node --watch --watch-path=./src/backend --watch-path=./views ./src/backend/server.js",
+    "prod": "node ./src/backend/server.js",
     "tailwind": "npx @tailwindcss/cli -i ./src/css/index.css -o ./static/css/index.css",
     "tailwind:watch": "npx @tailwindcss/cli -i ./src/css/index.css -o ./static/css/index.css --watch",
     "bundle": "npx esbuild src/js/*.js --bundle --minify --platform=browser --format=esm --outdir=static/js",
