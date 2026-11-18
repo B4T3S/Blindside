@@ -1,9 +1,9 @@
 <div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who transition-transform duration-500 ease-in-out" data-controller="dashboard">
-    <div class="px-8 pb-8 pt-30 h-screen top-0 flex">
+    <div class="px-8 pb-8 pt-30 h-screen top-0 flex" style="backdrop-filter: blur(6px) brightness(50%);">
         <div class="grid grid-cols-3 gap-8 w-full place-content-center">
             <div
                 id="media-buttons"
-                class="grid grid-cols-1 justify-items-center overflow-y-scroll h-[21em] pb-[14em] scrollbar-none media-scroller"
+                class="grid grid-cols-1 justify-items-center overflow-y-scroll h-[21em] pb-[14em] pt-[7em] scrollbar-none media-scroller"
                 data-dashboard-target="medias"
             >
             </div>
@@ -11,7 +11,7 @@
             <div class="col-span-2">
                 <div class="flex h-full items-center justify-center">
                     <div id="lobby-creation" class="p-5 weird-bg">
-                        <h2 class="text-3xl mb-4 select-none title-font">Creating a <span class="font-bold" id="lobby-creation-name">...</span> lobby</h2>
+                        <h2 class="text-3xl mb-4 select-none title-font">Creating a <span class="font-bold" data-dashboard-target="name">...</span> lobby</h2>
 
                         <label class="block" for="lobby-username">What should we call you?</label>
                         <input
@@ -36,9 +36,9 @@
 <template id="media-button">
     <div class="py-8 px-2 h-[7em]">
         <button
-            class="weird-button transition-none hover:scale-105 text-8xl font-bold title-font"
+            class="weird-selection transition-none hover:scale-105 text-8xl font-bold title-font"
         >
-            MEDIA
+            MEDIA-NAME
         </button>
     </div>
 </template>

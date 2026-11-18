@@ -222,7 +222,7 @@ export class Game {
       playerContainer.hidden = true;
       guessOptions.hidden = true;
 
-      
+
       const players = this.storage.players;
       this._showPlayerNames(players, "scoreboard-list");
       winnerScreen.hidden = false;

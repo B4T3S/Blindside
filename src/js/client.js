@@ -42,19 +42,3 @@ replay.addEventListener("click", () => game.replay());
 
 const playerContainer = document.getElementById("player-container");
 playerContainer.addEventListener("revealedCharacter", (event) => game.toggleGuessOptions());
-
-const dashboardMediaContainer = document.getElementById("media-buttons");
-dashboardMediaContainer.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    if(e.deltaY < 0) {
-        dashboardMediaContainer.scrollBy({
-            top: -(dashboardMediaContainer.querySelector("#media-buttons > div").scrollHeight),
-            behaviour: "smooth"
-        });
-    } else if(e.deltaY > 0) {
-        dashboardMediaContainer.scrollBy({
-            top: (dashboardMediaContainer.querySelector("#media-buttons > div").scrollHeight),
-            behaviour: "smooth"
-        });
-    }
-});
