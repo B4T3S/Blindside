@@ -1,27 +1,11 @@
-<div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who transition-transform duration-500 ease-in-out">
+<div id="game-select" class="w-screen h-screen fixed z-20 bg-guess-who transition-transform duration-500 ease-in-out" data-controller="dashboard">
     <div class="px-8 pb-8 pt-30 h-screen top-0 flex">
-        <div class="grid grid-cols-3 gap-8 w-full">
+        <div class="grid grid-cols-3 gap-8 w-full place-content-center">
             <div
-                class="grid grid-cols-1 gap-4 h-full place-content-center justify-items-center"
+                id="media-buttons"
+                class="grid grid-cols-1 justify-items-center overflow-y-scroll h-[21em] pb-[14em] scrollbar-none media-scroller"
+                data-dashboard-target="medias"
             >
-                <button
-                    class="weird-button transition-all duration-300 hover:scale-105 w-fit"
-                >
-                    <span
-                        class="text-7xl my-auto weird-button-label font-bold title-font"
-                    >
-                        DEADLOCK
-                    </span>
-                </button>
-                <button
-                    class="weird-button transition-all duration-300 hover:scale-105 w-fit"
-                >
-                    <span
-                        class="text-7xl my-auto weird-button-label font-bold title-font"
-                    >
-                        MINECRAFT
-                    </span>
-                </button>
             </div>
 
             <div class="col-span-2">
@@ -49,3 +33,12 @@
         </div>
     </div>
 </div>
+<template id="media-button">
+    <div class="py-8 px-2 h-[7em]">
+        <button
+            class="weird-button transition-none hover:scale-105 text-8xl font-bold title-font"
+        >
+            MEDIA
+        </button>
+    </div>
+</template>

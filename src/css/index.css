@@ -150,12 +150,7 @@ button {
 
 .weird-button {
     height: fit-content;
-    margin: 0.2em;
     position: relative;
-}
-
-.weird-button-label {
-    padding: 0.2em;
 
     &::before {
         content:"";
@@ -166,17 +161,28 @@ button {
         transform-origin: center;
         opacity: 0;
     }
-}
 
-.weird-button-label:hover {
-    color: var(--bg-color);
+    &:hover {
+        color: var(--bg-color);
 
-    &::before {
-        opacity: 1;
-        animation: rotate-frames 4.5s infinite steps(4);
-        box-shadow: 0.3em 0.3em 0.3em 0.1em rgba(0, 0, 0, 0.2);
+        &::before {
+            opacity: 1;
+            animation: rotate-frames 4.5s infinite steps(4);
+            box-shadow: 0.3em 0.3em 0.3em 0.1em rgba(0, 0, 0, 0.2);
+        }
     }
 }
+
+/* .media-scroller {
+    position: relative;
+
+    mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 10%,
+        transparent 100%
+    );
+} */
 
 .btn-green {
     @apply text-black cursor-pointer relative transition-all;
