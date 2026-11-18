@@ -14,7 +14,7 @@ const game = new Game();
 const username = document.getElementById("lobby-username");
 
 const createRoom = document.getElementById("create-room");
-createRoom.addEventListener("click", () => game.createRoom(username.value));
+createRoom.addEventListener("click", () => game.createRoom(username.value, createRoom.dataset.media));
 
 const leaveRoom = document.getElementById("leave-room");
 leaveRoom.addEventListener("click", () => game.leaveRoom());

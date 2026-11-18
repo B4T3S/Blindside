@@ -50,9 +50,15 @@ export class Game {
     this.turnOrderLength = 0;
   }
 
-  async createRoom(username) {
+  async createRoom(username, mediaId) {
     try {
       const roomCode = await this.socket.createRoom();
+
+      if(!!mediaId) {
+        const mediaSelect = document.getElementById("media-select");
+        mediaSelect.value = mediaId;
+        mediaSelect.dispatchEvent(new Event("change"));
+      }
 
       this.socket.updateStorage("roomCode", "set", roomCode);
       this.socket.updateStorage("phase", "set", GamePhase.LOBBY);

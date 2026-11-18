@@ -84,5 +84,8 @@ export class DashboardController extends Controller {
       background-size: cover;
       box-shadow: inset 0 0 5em 3em #000;
     `;
+
+    const createRoom = document.getElementById("create-room");
+    createRoom.dataset.media = this.medias[this.mediaIndex].dataset.id;
   }
 }
