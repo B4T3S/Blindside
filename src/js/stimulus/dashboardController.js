@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { animate } from "animejs";
 
 export class DashboardController extends Controller {
-  static targets = ["medias", "name"];
+  static targets = ["medias", "name", "splashart"];
 
   connect() {
     this._loadMedia();
@@ -79,10 +79,9 @@ export class DashboardController extends Controller {
     });
 
     this.nameTarget.innerText = this.medias[this.mediaIndex].innerText;
-    this.element.style = `
+    this.splashartTarget.style = `
       background-image: url("${this.medias[this.mediaIndex].dataset.url}");
       background-size: cover;
-      backdrop-filter: blur(5) opacity(0.5);
       box-shadow: inset 0 0 5em 3em #000;
     `;
   }

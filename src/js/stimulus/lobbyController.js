@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export class LobbyController extends Controller {
-  static targets = ["medias", "categories"];
+  static targets = ["medias", "categories", "splashart"];
 
   connect() {
     this.updateMedia();
@@ -19,6 +19,7 @@ export class LobbyController extends Controller {
       result.media.forEach((media) => {
         let option = document.createElement("option");
         option.value = media.id;
+        option.dataset.url = media.splash_art_url;
         option.innerText = media.name;
         this.mediasTarget.append(option);
       });
@@ -28,6 +29,10 @@ export class LobbyController extends Controller {
   }
 
   updateCategories() {
+    const selectIndex = this.mediasTarget.selectedIndex;
+    const selectedElement = this.mediasTarget[selectIndex]
+    this.splashartTarget.style = `background-image: url("${selectedElement.dataset.url}")`;
+
     fetch(`/api/categories/${this.mediasTarget.value}`, {
       method: "GET"
     })
