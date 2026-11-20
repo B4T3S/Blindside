@@ -118,7 +118,8 @@
 
                         <div class="flex flex-col">
                             <label class="input-label mb-0!">Splash Art URL:</label>
-                            <input data-action="input->admin#updateCreateMediaImage" name="url" type="url" class="w-full" data-1p-ignore>
+                            <input data-action="input->admin#updateCreateMediaImage" data-admin-target="createMediaUrl" name="url" type="url" class="w-full" data-1p-ignore>
+                            <input data-action="input->admin#uploadMediaImage" type="file" name="image" class="btn-green mt-2" />
                         </div>
 
                         <div class="flex flex-col mt-2">
@@ -170,7 +171,8 @@
 
                         <div class="flex flex-col">
                             <label class="input-label mb-0!">Icon URL:</label>
-                            <input data-action="input->admin#updateCreateOptionImage" name="url" type="url" class="w-full" data-1p-ignore>
+                            <input data-action="input->admin#updateCreateOptionImage" data-admin-target="createOptionUrl" name="url" type="url" class="w-full" data-1p-ignore>
+                            <input data-action="input->admin#uploadOptionImage" type="file" name="image" class="btn-green mt-2" />
                         </div>
 
                         <div class="flex flex-col mt-2">

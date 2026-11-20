@@ -1,10 +1,22 @@
 import { Router, urlencoded } from 'express';
 import { DiscordAuthService } from '../service/discord_auth_service.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
+import multer from 'multer';
+import { FileService } from '../service/file_service.js';
 
 export function createAdminRouter(database) {
   const router = Router();
   const discord = new DiscordAuthService();
+  const fileService = new FileService();
+
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+      fileSize: 20 * 1024 * 1024, // 20Mib
+      files: 1
+    },
+    fileFilter: fileService.fileFilter
+  });
 
   // Start Discord login
   router.get('/login', (req, res, next) => {
@@ -147,6 +159,18 @@ export function createAdminRouter(database) {
         database.delete_option(req.params.id);
         return res.redirect('/admin');
     }
+  });
+
+  router.post('/api/upload', [upload.single('uploaded_file'), requireRole('role_admin')], async (req, res) => {
+    if (!req.file) {
+      throw new Error('No file uploaded!');
+    }
+
+    fileService.upload(req.file).then(filename => {
+      res.json({
+        'url': `/static/assets/custom/${filename}`
+      });
+    });
   });
 
   // Deny unknown admin paths rather than falling through

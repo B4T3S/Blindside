@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export class AdminController extends Controller {
-  static targets = ["createMedia", "createMediaImage", "createCategory", "createOption", "createOptionImage", "editCard"];
+  static targets = ["createMedia", "createMediaImage", "createMediaUrl", "createCategory", "createOption", "createOptionImage", "createOptionUrl", "editCard"];
 
   connect() {
     this.resetAllCards();
@@ -77,5 +77,51 @@ export class AdminController extends Controller {
     this.resetCreateMedia();
     this.resetCreateCategory();
     this.resetCreateOption();
+  }
+
+  uploadMediaImage(event) {
+    const file = event.target.files[0];
+
+    this.uploadImage(file, (url) => {
+      this.createMediaUrlTarget.value = url;
+      this.previewCreateMediaImage(url);
+    });
+  }
+
+  uploadOptionImage(event) {
+    const file = event.target.files[0];
+
+    this.uploadImage(file, (url) => {
+      this.createOptionUrlTarget.value = url;
+      this.previewCreateOptionImage(url);
+    });
+  }
+
+  uploadImage(file, preview_callback) {
+    if (!file) {
+      preview_callback("");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('uploaded_file', file);
+
+    fetch('/admin/api/upload', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (!response.ok) {
+        preview_callback("");
+        throw new Error(`Upload failed! ${response.status}`);
+      }
+
+      return response.json();
+    }).then(result => {
+      if (!result.url) {
+        return;
+      }
+
+      preview_callback(result.url);
+    });
   }
 }
