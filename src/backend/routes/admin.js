@@ -69,7 +69,14 @@ export function createAdminRouter(database) {
   // Protected routes
 
   router.get('/', requireRole('role_admin'), async (req, res) => {
-    res.render('admin/dashboard.html.twig');
+    const tables = await database.get_db_counts();
+
+    res.render('admin/dashboard.html.twig', {
+      tables: tables,
+      mediaCount: tables?.media ?? "N/A",
+      categoryCount: tables?.categories ?? "N/A",
+      optionCount: tables?.options ?? "N/A"
+    });
   });
 
   router.get('/media{/:media}{/:category}{/:option}', requireRole('role_admin'), async (req, res) => {

@@ -97,6 +97,26 @@ export class DatabaseService {
     });
   }
 
+  get_db_counts() {
+    return new Promise((resolve) => {
+      const tables = ["media", "categories", "options"];
+
+      const query = tables
+        .map((name) => `SELECT '${name.replace(/'/g, "''")}' AS name, COUNT(*) AS count FROM "${name.replace(/"/g, '""')}"`)
+        .join(' UNION ALL ') + ' ORDER BY count DESC';
+
+      // 3. Execute once and return [{ name: 'users', count: 1420 }, ...]
+      this.db.prepare(query).all((err, rows) => {
+        if (err) {
+          console.error(err);
+          return [];
+        }
+
+        resolve(Object.fromEntries(rows.map(({ name, count }) => [name, count])));
+      });
+    })
+  }
+
   add_category(mediaId, name) {
     return new Promise((resolve) => {
       const insert = this.db.prepare("INSERT INTO categories (name, media_id) VALUES(?, ?);");
