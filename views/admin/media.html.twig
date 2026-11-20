@@ -1,0 +1,194 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <div class="admin w-screen h-screen px-8 pb-8 pt-30">
+        <div class="grid grid-cols-4 gap-8 w-full h-full">
+
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Media:</h1>
+                    <button id="add-media" data-action="click->admin#addMedia" class="btn-green px-2 py-1">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for game in games %}
+                            <tr class="hovered {% if selectedMedia == game.id %} selected {% endif %} px-1" data-action="click->admin#selectMedia" data-id="{{ game.id }}">
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ game.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="/admin/api/media/delete/{{ game.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Categories:</h1>
+                    <button
+                        id="add-category"
+                        data-action="click->admin#addCategory"
+                        class="btn-green px-2 py-1"
+                        {% if not selectedMedia %} disabled {% endif %}
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for category in categories %}
+                            <tr
+                                class="hovered {% if selectedCategory == category.id %} selected {% endif %} px-1"
+                                data-action="click->admin#selectCategory"
+                                data-admin-media-param="{{ selectedMedia }}"
+                                data-admin-category-param="{{ category.id }}"
+                            >
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ category.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="/admin/api/categories/delete/{{ category.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full cream-bg dark-text p-4">
+                <div class="flex flex-row justify-between">
+                    <h1 class="font-bold text-2xl w-fit content-center">Options:</h1>
+                    <button
+                        id="add-option"
+                        data-action="click->admin#addOption"
+                        class="btn-green px-2 py-1"
+                        {% if not selectedCategory %} disabled {% endif %}
+                    >
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <table class="text-left border-collapse w-full mt-2">
+                    <tbody class="divide-y divide-stone-500">
+                        {% for option in options %}
+                            <tr
+                                class="hovered {% if selectedOption == option.id %} selected {% endif %} px-1"
+                                data-action="click->admin#selectOption"
+                                data-admin-media-param="{{ selectedMedia }}"
+                                data-admin-category-param="{{ selectedCategory }}"
+                                data-admin-option-param="{{ option.id }}"
+                            >
+                                <td class="ps-1">{{ loop.index }}.</td>
+                                <td>{{ option.name }}</td>
+                                <td class="text-right w-5">
+                                    <form action="/admin/api/options/delete/{{ option.id }}" method="POST">
+                                        <button type="submit" class="btn-red px-2 py-1">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="h-full justify-center grid">
+                <div id="create-media" data-admin-target="createMedia editCard" class="card-bg h-fit my-auto">
+                    <h1 class="font-bold text-2xl">Create Media:</h1>
+
+                    <form method="POST" action="/admin/api/media/add">
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Splash Art URL:</label>
+                            <input data-action="input->admin#updateCreateMediaImage" name="url" type="url" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-2">
+                            <img data-admin-target="createMediaImage" src="" class="w-full max-h-28"/>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-media" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="create-category" data-admin-target="createCategory editCard" class="card-bg h-fit my-auto" hidden>
+                    <h1 class="font-bold text-2xl">Create Category:</h1>
+
+                    <form method="POST" action="/admin/api/category/add">
+                        <input name="mediaId" type="text" class="exclude" value="{{ selectedMedia }}" data-1p-ignore hidden>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-category" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="create-option" data-admin-target="createOption editCard" class="card-bg h-fit my-auto" hidden>
+                    <h1 class="font-bold text-2xl">Create Option:</h1>
+
+                    <form method="POST" action="/admin/api/option/add">
+                        <input name="mediaId" type="text" class="exclude" value="{{ selectedMedia }}" data-1p-ignore hidden>
+                        <input name="categoryId" type="text" class="exclude" value="{{ selectedCategory }}" data-1p-ignore hidden>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Name:</label>
+                            <input name="name" type="text" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="input-label mb-0!">Icon URL:</label>
+                            <input data-action="input->admin#updateCreateOptionImage" name="url" type="url" class="w-full" data-1p-ignore>
+                        </div>
+
+                        <div class="flex flex-col mt-2">
+                            <img data-admin-target="createOptionImage" src="" class="w-full"/>
+                        </div>
+
+                        <div class="flex flex-col mt-10">
+                            <div class="text-end">
+                                <button id="save-option" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

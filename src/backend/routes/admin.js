@@ -67,12 +67,17 @@ export function createAdminRouter(database) {
   router.use(requireAuth);
 
   // Protected routes
-  router.get('/{:media}{/:category}{/:option}', requireRole('role_admin'), async (req, res) => {
+
+  router.get('/', requireRole('role_admin'), async (req, res) => {
+    res.render('admin/dashboard.html.twig');
+  });
+
+  router.get('/media{/:media}{/:category}{/:option}', requireRole('role_admin'), async (req, res) => {
     const selectedMedia = req.params.media;
     const selectedCategory = req.params.category;
     const selectedOption = req.params.option;
 
-    res.render('admin/dashboard.html.twig', {
+    res.render('admin/media.html.twig', {
       hotReload: process.env.NODE_ENV !== 'production',
       games: await database.get_all_media(),
       categories: selectedMedia ? await database.get_all_categories(selectedMedia) : [],
@@ -83,7 +88,7 @@ export function createAdminRouter(database) {
     });
   });
 
-  router.post('/media/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+  router.post('/api/media/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
     switch (req.params.action) {
       case "add":
         if (!req.body.name || !req.body.url) {
@@ -101,7 +106,7 @@ export function createAdminRouter(database) {
     }
   });
 
-  router.post('/category/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+  router.post('/api/category/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
     switch (req.params.action) {
       case "add":
         if (!req.body.name || !req.body.mediaId) {
@@ -119,7 +124,7 @@ export function createAdminRouter(database) {
     }
   });
 
-  router.post('/option/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
+  router.post('/api/option/:action{/:id}', [requireRole('role_admin'), urlencoded()], async (req, res) => {
     switch (req.params.action) {
       case "add":
         if (!req.body.name || !req.body.url || !req.body.categoryId) {

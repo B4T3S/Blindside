@@ -8,15 +8,15 @@ export class AdminController extends Controller {
   }
 
   selectMedia(event) {
-    window.location.replace(`/admin/${event.currentTarget.dataset.id}`);
+    window.location.replace(`/admin/media/${event.currentTarget.dataset.id}`);
   }
 
   selectCategory(event) {
-    window.location.replace(`/admin/${event.params.media}/${event.params.category}`)
+    window.location.replace(`/admin/media/${event.params.media}/${event.params.category}`)
   }
 
   selectOption(event) {
-    window.location.replace(`/admin/${event.params.media}/${event.params.category}/${event.params.option}`);
+    window.location.replace(`/admin/media/${event.params.media}/${event.params.category}/${event.params.option}`);
   }
 
   addMedia() {
