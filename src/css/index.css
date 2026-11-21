@@ -69,15 +69,19 @@
 
     --red: #dd6638;
     --red-secondary: #b44b21;
-}
 
-body {
     color: var(--text-color);
 
     font-family: "Road Rage", system-ui;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: 400;
     font-style: normal;
+}
+
+@media (max-width:900px) and (orientation: landscape) {
+    :root {
+        font-size: 1.2rem;
+    }
 }
 
 input, select {
@@ -271,7 +275,7 @@ button {
 
 .card-bg {
     color: var(--bg-color);
-    @apply relative p-8;
+    @apply relative p-5;
 
     &::before {
         content: "";
@@ -303,10 +307,10 @@ button {
 }
 
 .player-card {
-    @apply rounded-lg p-4 text-center flex flex-col;
+    @apply rounded-lg p-3 text-center flex flex-col;
 
     .target-header {
-        @apply text-3xl mb-2 text-start font-bold;
+        @apply text-lg mb-2 text-start font-bold;
         line-height: 1;
     }
 
@@ -321,13 +325,13 @@ button {
     }
 
     .player-header {
-        @apply text-stone-600 flex-none border-t pt-2 flex flex-row w-full justify-end;
+        @apply text-stone-600 flex-none border-t pt-1.5 flex flex-row w-full justify-end;
         border-color: var(--bg-color);
     }
 }
 
 .flip-card {
-    height: 20em;
+    height: 15em;
     aspect-ratio: 5/7;
     background-color: transparent;
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
@@ -361,7 +365,7 @@ button {
 }
 
 .scoreboard {
-    @apply text-3xl;
+    @apply text-xl;
 
     li:nth-child(-n+3) {
         background-size: 200% auto;
@@ -404,7 +408,7 @@ button {
 }
 
 .stamp {
-    @apply text-7xl tracking-wider border-4 rounded-md px-3 py-1 relative;
+    @apply text-4xl tracking-wider border-4 rounded-md px-5 py-1 relative;
     transform: rotate(-5deg);
 
     &:before {
@@ -437,7 +441,7 @@ button {
 /* ADMIN PANEL */
 .admin {
     @apply font-sans;
-    font-size: 1.2rem;
+    font-size: 0.7rem;
     font-weight: 400;
     font-style: normal;
 

@@ -1,6 +1,6 @@
 <dialog id="join-game-dialog" class="m-auto bg-transparent">
-    <div class="p-8 flex flex-col weird-bg overflow-hidden">
-        <h1 class="text-2xl mb-5">Join a room?</h1>
+    <div class="p-5 flex flex-col weird-bg overflow-hidden">
+        <h1 class="text-lg mb-3">Join a lobby</h1>
 
         <label class="block" for="lobby-username">What should we call you?</label>
         <input
@@ -15,19 +15,20 @@
         />
 
         <label for="join-room-code" class="mt-4">
-            And what's the room code?
+            And what's the lobby code?
         </label>
         <input
             type="text"
             id="join-room-code"
-            placeholder="Room code"
+            placeholder="Lobby code"
             maxlength="16"
             data-1p-ignore
+            autocomplete="off"
         />
 
         <span class="mt-4 w-full">
-            <button class="inline-block btn-red hover:scale-105 py-2 px-4" commandfor="join-game-dialog" command="close">Abort</button>
-            <button class="inline-block btn-green hover:scale-105 py-2 px-4 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
+            <button class="inline-block btn-red hover:scale-105 py-1.5 px-3" commandfor="join-game-dialog" command="close">Abort</button>
+            <button class="inline-block btn-green hover:scale-105 py-1.5 px-3 float-end" id="join-game" commandfor="join-game-dialog" command="close">Join Game</button>
         </span>
     </div>
 </dialog>

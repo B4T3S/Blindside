@@ -11,8 +11,8 @@
     <body>
         <div class="header">
             <div class="flex">
-                <a href="#" class="text-7xl font-bold title-font">Blindside</a>
-                <h4 class="text-2xl ms-4 mb-2 mt-auto title-font">
+                <a href="#" class="text-4xl font-bold title-font">Blindside</a>
+                <h4 class="text-lg ms-4 mb-0 mt-auto title-font">
                     Everyone knows, <i>except you.</i>
                 </h4>
             </div>
@@ -20,12 +20,12 @@
                 <button id="join-room-button" command="show-modal" commandfor="join-game-dialog"
                     class="weird-button transition-all duration-300 hover:scale-105 my-auto!"
                 >
-                    <span class="text-4xl my-auto weird-button-label">
+                    <span class="text-2xl p-1 px-2 my-auto weird-button-label">
                         Join a lobby
                     </span>
                 </button>
 
-                <button id="leave-room" class="text-4xl p-2 px-4 my-auto btn-red hover:scale-105 inline-block" hidden>
+                <button id="leave-room" class="text-2xl p-1 px-3 my-auto btn-red hover:scale-105 inline-block" hidden>
                     Leave lobby
                 </button>
             </div>
@@ -38,6 +38,13 @@
         {% include 'components/game.html.twig' %}
 
         {% include 'components/join-game-dialog.html.twig' %}
+
+        <div class="md:hidden absolute h-screen w-screen flex justify-center place-items-center z-[100] bg-guess-who">
+            <div class="weird-bg p-4 text-center">
+                <span class="text-xl">ROTATE YOUR DEVICE!</span>
+                <p>This website was not designed with portrait mode in mind.</p>
+            </div>
+        </div>
 
         <script type="module" src="/static/js/client.js"></script>
         {% if hotReload %}

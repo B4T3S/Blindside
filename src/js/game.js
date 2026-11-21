@@ -90,7 +90,6 @@ export class Game {
   }
 
   async startGame() {
-    // TODO: Cards are not visually reset if you replay in the same lobby
     const media = document.getElementById("media-select").value;
     const category = document.getElementById("category-select").value;
 

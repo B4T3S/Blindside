@@ -1,25 +1,25 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-<div class="admin w-screen h-screen px-8 pb-8 pt-30">
-    <div class="grid grid-cols-12 gap-8 w-full h-full">
-        <div class="cream-bg dark-text p-4 h-fit">
+<div class="admin w-screen h-screen px-6 pb-6 pt-22">
+    <div class="grid grid-cols-3 gap-6 w-full h-full">
+        <div class="cream-bg dark-text p-2 h-fit">
             <div class="flex flex-row justify-center">
-                <h1 class="font-bold text-2xl w-fit">Total Media</h1>
+                <h1 class="font-bold text-lg w-fit">Total Media</h1>
             </div>
-            <h1 class="text-6xl mt-3 text-center font-bold">{{ mediaCount }}</h1>
+            <h1 class="text-4xl mt-3 text-center font-bold">{{ mediaCount }}</h1>
         </div>
-        <div class="cream-bg dark-text p-4 h-fit">
+        <div class="cream-bg dark-text p-2 h-fit">
             <div class="flex flex-row justify-center">
-                <h1 class="font-bold text-2xl w-fit">Total Categories</h1>
+                <h1 class="font-bold text-lg w-fit">Total Categories</h1>
             </div>
-            <h1 class="text-6xl mt-3 text-center font-bold">{{ categoryCount }}</h1>
+            <h1 class="text-4xl mt-3 text-center font-bold">{{ categoryCount }}</h1>
         </div>
-        <div class="cream-bg dark-text p-4 h-fit">
+        <div class="cream-bg dark-text p-2 h-fit">
             <div class="flex flex-row justify-center">
-                <h1 class="font-bold text-2xl w-fit">Total Options</h1>
+                <h1 class="font-bold text-lg w-fit">Total Options</h1>
             </div>
-            <h1 class="text-6xl mt-3 text-center font-bold">{{ optionCount }}</h1>
+            <h1 class="text-4xl mt-3 text-center font-bold">{{ optionCount }}</h1>
         </div>
     </div>
 </div>

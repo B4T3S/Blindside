@@ -1,13 +1,13 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-    <div class="admin w-screen h-screen px-8 pb-8 pt-30">
-        <div class="grid grid-cols-4 gap-8 w-full h-full">
+    <div class="admin w-screen h-screen px-5 pb-6 pt-22">
+        <div class="grid grid-cols-4 gap-5 w-full h-full">
 
-            <div class="h-full cream-bg dark-text p-4">
+            <div class="h-full cream-bg dark-text p-3">
                 <div class="flex flex-row justify-between">
-                    <h1 class="font-bold text-2xl w-fit content-center">Media:</h1>
-                    <button id="add-media" data-action="click->admin#addMedia" class="btn-green px-2 py-1">
+                    <h1 class="font-bold text-lg w-fit content-center">Media:</h1>
+                    <button id="add-media" data-action="click->admin#addMedia" class="btn-green px-1.5 py-1">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -20,7 +20,7 @@
                                 <td>{{ game.name }}</td>
                                 <td class="text-right w-5">
                                     <form action="/admin/api/media/delete/{{ game.id }}" method="POST">
-                                        <button type="submit" class="btn-red px-2 py-1">
+                                        <button type="submit" class="btn-red px-1.5 py-1">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -31,13 +31,13 @@
                 </table>
             </div>
 
-            <div class="h-full cream-bg dark-text p-4">
+            <div class="h-full cream-bg dark-text p-3">
                 <div class="flex flex-row justify-between">
-                    <h1 class="font-bold text-2xl w-fit content-center">Categories:</h1>
+                    <h1 class="font-bold text-lg w-fit content-center">Categories:</h1>
                     <button
                         id="add-category"
                         data-action="click->admin#addCategory"
-                        class="btn-green px-2 py-1"
+                        class="btn-green px-1.5 py-1"
                         {% if not selectedMedia %} disabled {% endif %}
                     >
                         <i class="fa-solid fa-plus"></i>
@@ -57,7 +57,7 @@
                                 <td>{{ category.name }}</td>
                                 <td class="text-right w-5">
                                     <form action="/admin/api/categories/delete/{{ category.id }}" method="POST">
-                                        <button type="submit" class="btn-red px-2 py-1">
+                                        <button type="submit" class="btn-red px-1.5 py-1">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -68,13 +68,13 @@
                 </table>
             </div>
 
-            <div class="h-full cream-bg dark-text p-4">
+            <div class="h-full cream-bg dark-text p-3">
                 <div class="flex flex-row justify-between">
-                    <h1 class="font-bold text-2xl w-fit content-center">Options:</h1>
+                    <h1 class="font-bold text-lg w-fit content-center">Options:</h1>
                     <button
                         id="add-option"
                         data-action="click->admin#addOption"
-                        class="btn-green px-2 py-1"
+                        class="btn-green px-1.5 py-1"
                         {% if not selectedCategory %} disabled {% endif %}
                     >
                         <i class="fa-solid fa-plus"></i>
@@ -95,7 +95,7 @@
                                 <td>{{ option.name }}</td>
                                 <td class="text-right w-5">
                                     <form action="/admin/api/options/delete/{{ option.id }}" method="POST">
-                                        <button type="submit" class="btn-red px-2 py-1">
+                                        <button type="submit" class="btn-red px-1.5 py-1">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </form>
@@ -108,7 +108,7 @@
 
             <div class="h-full justify-center grid">
                 <div id="create-media" data-admin-target="createMedia editCard" class="card-bg h-fit my-auto">
-                    <h1 class="font-bold text-2xl">Create Media:</h1>
+                    <h1 class="font-bold text-lg">Create Media:</h1>
 
                     <form method="POST" action="/admin/api/media/add">
                         <div class="flex flex-col">
@@ -128,7 +128,7 @@
 
                         <div class="flex flex-col mt-10">
                             <div class="text-end">
-                                <button id="save-media" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                <button id="save-media" type="submit" class="btn-green p-1.5 px-3 hover:scale-110">
                                     Save
                                 </button>
                             </div>
@@ -137,7 +137,7 @@
                 </div>
 
                 <div id="create-category" data-admin-target="createCategory editCard" class="card-bg h-fit my-auto" hidden>
-                    <h1 class="font-bold text-2xl">Create Category:</h1>
+                    <h1 class="font-bold text-lg">Create Category:</h1>
 
                     <form method="POST" action="/admin/api/category/add">
                         <input name="mediaId" type="text" class="exclude" value="{{ selectedMedia }}" data-1p-ignore hidden>
@@ -149,7 +149,7 @@
 
                         <div class="flex flex-col mt-10">
                             <div class="text-end">
-                                <button id="save-category" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                <button id="save-category" type="submit" class="btn-green p-1.5 px-3 hover:scale-110">
                                     Save
                                 </button>
                             </div>
@@ -158,7 +158,7 @@
                 </div>
 
                 <div id="create-option" data-admin-target="createOption editCard" class="card-bg h-fit my-auto" hidden>
-                    <h1 class="font-bold text-2xl">Create Option:</h1>
+                    <h1 class="font-bold text-lg">Create Option:</h1>
 
                     <form method="POST" action="/admin/api/option/add">
                         <input name="mediaId" type="text" class="exclude" value="{{ selectedMedia }}" data-1p-ignore hidden>
@@ -181,7 +181,7 @@
 
                         <div class="flex flex-col mt-10">
                             <div class="text-end">
-                                <button id="save-option" type="submit" class="btn-green p-2 px-4 hover:scale-110">
+                                <button id="save-option" type="submit" class="btn-green p-1.5 px-3 hover:scale-110">
                                     Save
                                 </button>
                             </div>

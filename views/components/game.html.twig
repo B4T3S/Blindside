@@ -1,14 +1,14 @@
-<div id="game" class="w-screen h-screen fixed z-0 bg-guess-who">
-    <div class="h-full flex flex-col items-center justify-center">
+<div id="game" class="w-screen h-screen fixed z-0 bg-guess-who pt-18">
+    <div class="h-full flex flex-row lg:flex-col gap-x-4  items-center justify-center">
         <div class="flex flex-row" id="player-container" hidden>
             <div class="flip-card">
                 <div class="flip-card-inner" data-controller="card">
                     <!-- BEGIN FRONT SIDE -->
                     <div class="flip-card-front cream-bg player-card" data-card-target="front">
-                        <div class="!absolute !px-8 top-45 left-8 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
+                        <div class="!absolute top-23 left-3 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
                             GUESSED!
                         </div>
-                        <div class="!absolute !px-8 top-45 left-18 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
+                        <div class="!absolute top-23 left-8 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
                             NEXT!
                         </div>
                         <div class="target-header dark-text">
@@ -31,10 +31,10 @@
                     <!-- END FRONT SIDE -->
                     <!-- BEGIN BACK SIDE -->
                     <div class="flip-card-back cream-bg player-card" data-card-target="back">
-                        <div class="!absolute !px-8 top-45 left-8 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
+                        <div class="!absolute top-23 left-3 pointer-events-none stamp stamp-green" data-card-target="guessed" style="opacity: 0%;">
                             GUESSED!
                         </div>
-                        <div class="!absolute !px-8 top-45 left-18 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
+                        <div class="!absolute top-23 left-8 pointer-events-none stamp stamp-red" data-card-target="failed" style="opacity: 0%;">
                             NEXT!
                         </div>
                         <div class="target-header dark-text">
@@ -58,24 +58,24 @@
                 </div>
             </div>
         </div>
-        <div id="guess-options" class="flex flex-col items-center justify-center mt-5 text-5xl" hidden>
+        <div id="guess-options" class="flex flex-col items-center justify-center mt-2 text-lg" hidden>
             <p>Ask your question, take your guess...</p>
 
-            <p class="mt-2 mb-4">Was your guess correct?</p>
+            <p class="mb-2">Was your guess correct?</p>
             <span>
-                <button id="guess-correct" class="btn-green p-2 px-4 me-4 hover:scale-105">YES</button>
-                <button id="guess-incorrect" class="btn-red p-2 px-4 hover:scale-105">NO</button>
+                <button id="guess-correct" class="btn-green p-1.5 px-3 me-4 hover:scale-105">YES</button>
+                <button id="guess-incorrect" class="btn-red p-1.5 px-3 hover:scale-105">NO</button>
             </span>
         </div>
         <div id="winner-screen" class="flex flex-col items-center justify-center" hidden>
-            <div class="weird-bg text-dark p-5 flex flex-col">
-                <div class="text-6xl title-font">Scoreboard:</div>
+            <div class="weird-bg text-dark p-4 flex flex-col">
+                <div class="text-3xl title-font">Scoreboard:</div>
 
                 <ol id="scoreboard-list" class="scoreboard"></ol>
             </div>
-            <div id="winner-screen-buttons" class="flex flex-row gap-4 mt-8 text-3xl" hidden>
-                <button id="lobby-return" class="btn-red p-2 px-4 hover:scale-105">Return to lobby</button>
-                <button id="replay" class="btn-green p-2 ps-6 pe-4 hover:scale-105">Re-play with same settings</button>
+            <div id="winner-screen-buttons" class="flex flex-row gap-4 mt-8 text-xl" hidden>
+                <button id="lobby-return" class="btn-red p-1.5 px-3 hover:scale-105">Return to lobby</button>
+                <button id="replay" class="btn-green p-1.5 ps-5 pe-3 hover:scale-105">Re-play with same settings</button>
             </div>
         </div>
     </div>
