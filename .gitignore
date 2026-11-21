@@ -7,3 +7,4 @@ sessions.sqlite
 # Statically generated content
 static/js/*.js
 static/css/*.css
+static/assets/custom
