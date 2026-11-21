@@ -110,8 +110,16 @@ export class Game {
 
   copyRoomCode() {
     const roomCode = document.getElementById("room-code");
+    const copyIcon = document.getElementById("lobby-code-copy-icon");
+    const copyCheck = document.getElementById("lobby-code-copy-check");
     navigator.clipboard.writeText(roomCode.innerText);
-    // TODO: display toast to indicate the room code was copied.
+    copyIcon.hidden = true;
+    copyCheck.hidden = false;
+
+    setTimeout(() => {
+      copyCheck.hidden = true;
+      copyIcon.hidden = false;
+    }, 1000);
   }
 
   guessCorrect() {
