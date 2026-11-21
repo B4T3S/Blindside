@@ -104,9 +104,9 @@ export class Game {
       "category": category
     });
 
-    // TODO: display countdown
+    this._resetCards();
 
-    setTimeout(async () => await this.socket.sendRequest("startRound"), 3000);
+    this.socket.sendRequest("startRound")
   }
 
   copyRoomCode() {
@@ -129,19 +129,27 @@ export class Game {
 
   replay() {
     const winnerScreen = document.getElementById("winner-screen");
+    this._resetCards();
+    
     winnerScreen.hidden = true;
 
-    // TODO: display countdown
-    // TODO: this countdown is only displayed to the lobby host and no one else.
-    // might be worth just getting rid of it
-
-    setTimeout(async () => await this.socket.sendRequest("replay"), 3000);
+    this.socket.sendRequest("replay");
   }
 
   toggleGuessOptions() {
     const guessOptions = document.getElementById("guess-options");
     const currentTurnOrder = this.storage.turnList;
     guessOptions.hidden = !(currentTurnOrder.length > 0 && (this.clientId == currentTurnOrder[0]));
+  }
+
+  _resetCards() {
+    const targetNames = document.querySelectorAll(".js-target-name");
+    const images = document.querySelectorAll(".js-image");
+    const playerNames = document.querySelectorAll(".js-player-name");
+
+    targetNames.forEach(e => e.innerText = "Target Name");
+    images.forEach(e => e.src = "");
+    playerNames.forEach(e => e.innerText = "Player Name");
   }
 
   _setUpKnownSubscribers() {
@@ -158,7 +166,6 @@ export class Game {
   }
 
   async _updateSubscribers(updatedKey) {
-    // TODO: this subscriber update system does not specify WHICH object is updated, so all subscribers for all objects are called at all times
     const subscriber = this._subscribers.find(sub => sub.property == updatedKey);
     if (subscriber) {
       await subscriber.callback(this.storage[updatedKey]);
