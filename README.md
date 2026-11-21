@@ -1,4 +1,4 @@
-# Guess who!
+# Blindside
 
 Most important information for developing this app for now:
 
