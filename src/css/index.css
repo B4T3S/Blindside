@@ -142,7 +142,7 @@ button {
 
 .header {
     background-color: var(--bg-color);
-    @apply w-full flex flex-row justify-between z-50 top-0 fixed py-4 px-8 text-shadow-lg/30;
+    @apply w-full flex flex-row justify-between z-50 top-0 fixed py-4 px-5 text-shadow-lg/30;
 }
 
 .embossed {
