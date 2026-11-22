@@ -116,12 +116,12 @@ export function createAdminRouter(database) {
 
         const id = await database.add_media(req.body.name, req.body.url);
         if(!id)
-          return res.redirect('/admin');
+          return res.redirect('/admin/media');
 
-        return res.redirect(`/admin/${id}`);
+        return res.redirect(`/admin/media/${id}`);
       case "delete":
         database.delete_media(req.params.id);
-        return res.redirect('/admin');
+        return res.redirect('/admin/media');
     }
   });
 
@@ -134,12 +134,12 @@ export function createAdminRouter(database) {
 
         const id = await database.add_category(req.body.mediaId, req.body.name);
         if(!id)
-            return res.redirect('/admin');
+            return res.redirect('/admin/media');
 
-        return res.redirect(`/admin/${req.body.mediaId}/${id}`);
+        return res.redirect(`/admin/media/${req.body.mediaId}/${id}`);
       case "delete":
         database.delete_category(req.params.id);
-        return res.redirect('/admin');
+        return res.redirect('/admin/media');
     }
   });
 
@@ -152,12 +152,12 @@ export function createAdminRouter(database) {
 
         const id = await database.add_option(req.body.categoryId, req.body.name, req.body.url);
         if(!id)
-          return res.redirect('/admin');
+          return res.redirect('/admin/media');
 
-        return res.redirect(`/admin/${req.body.mediaId}/${req.body.categoryId}/${id}`);
+        return res.redirect(`/admin/media/${req.body.mediaId}/${req.body.categoryId}/${id}`);
       case "delete":
         database.delete_option(req.params.id);
-        return res.redirect('/admin');
+        return res.redirect('/admin/media');
     }
   });
 

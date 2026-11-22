@@ -47,6 +47,8 @@ export class AdminController extends Controller {
     this.previewCreateOptionImage(url);
   }
 
+  // TODO: Check the generated frontend URL.
+  // It not starting with a host prevents saving right now.
   previewCreateMediaImage(url) {
     this.createMediaImageTarget.hidden = !url;
     this.createMediaImageTarget.src = url;
