@@ -2,6 +2,9 @@ FROM node:26-alpine
 
 COPY . ./app
 
+ARG APP_VERSION=dev
+ENV APP_VERSION=$APP_VERSION
+
 WORKDIR /app
 
 RUN npm install
